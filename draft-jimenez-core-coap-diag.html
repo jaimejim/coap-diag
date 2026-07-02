@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>CoAP Diagnostic Message Notation</title>
+<meta content="Jaime Jimenez" name="author">
+<meta content="Carsten Bormann" name="author">
+<meta content="
+       This document defines a text notation for representing Constrained Application Protocol (CoAP) request/response exchanges in Internet-Drafts and RFCs. The notation balances human readability with mechanical validation: a reader can follow an exchange at a glance, and tooling can be built to parse the message structure and check each payload against its declared content format. The notation is application-layer by default, with transport-layer detail added only where an example depends on it. It is a recommended convention for use in documents and with authoring tools such as kramdown-rfc, not a conformance target; it does not change CoAP or any on-the-wire encoding. 
+    " name="description">
+<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="draft-jimenez-core-coap-diag-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
+    google-i18n-address 3.1.1
+    intervaltree 3.2.1
+    Jinja2 3.1.6
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
+    pycountry 26.2.16
+    PyYAML 6.0.3
+    requests 2.34.2
+    wcwidth 0.8.2
+-->
+<link href="draft-jimenez-core-coap-diag.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+}
+
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 680;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight {
+  margin: 1em 0;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
+}
+svg {
+  display: block;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
+}
+.alignCenter {
+  margin: 1em 0;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+  & li {
+    margin-top: 0.5em;
+  }
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+      float: none;
+    }
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a {
+  text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
+}
+.iref + a[href].internal {
+  color: var(--text-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+  caption-side: bottom;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
+  }
+  pre, svg {
+    display: inline-block;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
+}
+
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
+  }
+  @media print {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+  & .prepared {
+    float: right;
+  }
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
+}
+
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
+}
+
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
+  }
+}
+
+/* Comments */
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+
+@media screen {
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
+      }
+    }
+    & a.toplink {
+      float: right;
+    }
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
+    }
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
+  }
+}
+
+/* TOC layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc {
+    page-break-before: always;
+    border-top: none;
+    padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">CoAP Diag</td>
+<td class="right">July 2026</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Jimenez &amp; Bormann</td>
+<td class="center">Expires 3 January 2027</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">CoRE Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-jimenez-core-coap-diag-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2026-07-02" class="published">2 July 2026</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2027-01-03">3 January 2027</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">J. Jimenez</div>
+<div class="org">Ericsson</div>
+</div>
+<div class="author">
+      <div class="author-name">C. Bormann</div>
+<div class="org">Universität Bremen TZI</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">CoAP Diagnostic Message Notation</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This document defines a text notation for representing Constrained Application Protocol (CoAP) request/response exchanges in Internet-Drafts and RFCs. The notation balances human readability with mechanical validation: a reader can follow an exchange at a glance, and tooling can be built to parse the message structure and check each payload against its declared content format. The notation is application-layer by default, with transport-layer detail added only where an example depends on it. It is a recommended convention for use in documents and with authoring tools such as kramdown-rfc, not a conformance target; it does not change CoAP or any on-the-wire encoding.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-jimenez-core-coap-diag/">https://datatracker.ietf.org/doc/draft-jimenez-core-coap-diag/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        core Working Group mailing list (<span><a href="mailto:core@ietf.org">mailto:core@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/core/">https://mailarchive.ietf.org/arch/browse/core/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/core/">https://www.ietf.org/mailman/listinfo/core/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/jaimejim/coap-diag">https://github.com/jaimejim/coap-diag</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 3 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2026 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-design-principles" class="internal xref">Design Principles</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-notation" class="internal xref">Notation</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-request-line" class="internal xref">Request Line</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-response-line" class="internal xref">Response Line</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-options" class="internal xref">Options</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-content-format-annotation" class="internal xref">Content-Format Annotation</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-payload" class="internal xref">Payload</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-transport-annotations" class="internal xref">Transport Annotations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-multiple-messages" class="internal xref">Multiple Messages</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
+                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-grammar" class="internal xref">Grammar</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-relationship-to-existing-no" class="internal xref">Relationship to Existing Notations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-tool-integration" class="internal xref">Tool Integration</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-survey-of-existing-notation" class="internal xref">Survey of Existing Notation Variants</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-requirements-for-a-unified-" class="internal xref">Requirements for a Unified Notation</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">The Constrained Application Protocol (CoAP) <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> defines a request/response model in which clients act on resources hosted by servers. Documents that specify or use CoAP illustrate these exchanges with examples: a request line, a set of options, and a payload, followed by the response. These examples are how a reader first understands a protocol interaction, and they are frequently the part of a document that implementers copy from.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Authors write these examples in divergent, ad hoc notations. Some split the request target into individual <code>Uri-Path</code> and <code>Uri-Query</code> option lines; others compose it into a single URI on the first line. Some prefix each message with <code>Header:</code> and each body with <code>Payload:</code>; others use <code>Req:</code> and <code>Res:</code>, or no markers at all. The same CBOR payload appears with and without a declared content format, and response codes are written both as <code>2.05 Content</code> and as <code>Header: Content (Code=2.05)</code>. <a href="#survey" class="auto internal xref">Appendix A</a> surveys seven such variants drawn from published RFCs and active drafts.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">This divergence has two costs. A reader who moves between documents must re-learn the convention each time. More importantly, no widely used notation is both readable and machine-checkable, so a malformed CBOR or JSON payload in an example is caught only by a human reviewer, if at all. Tooling that could validate payloads exists (<a href="#tool-integration" class="auto internal xref">Section 7</a>), but it needs a predictable structure to parse first.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">This document defines a single notation for CoAP exchanges, for use in documents and in authoring tools. The notation follows HTTP message syntax where practical, composes URIs on the first line, declares the content format of each payload, and represents payloads in the text notation appropriate to that format. It covers requests, responses, and their options and payloads. It does not define a rendering for transport mechanisms such as block-wise transfer <span>[<a href="#RFC7959" class="cite xref">RFC7959</a>]</span>, multicast requests, or suppressed responses <span>[<a href="#RFC7967" class="cite xref">RFC7967</a>]</span>; a document that illustrates those uses whatever notation it finds suitable. It does not change CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, and it does not define or alter any message encoding on the wire.<a href="#section-1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="terminology">
+<section id="section-2">
+      <h2 id="name-terminology">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
+      </h2>
+<p id="section-2-1">This document uses the following terms.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlNewline" id="section-2-2">
+        <dt id="section-2-2.1">request line:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.2">
+          <p id="section-2-2.2.1">The first line of a request. It carries the CoAP method and the request target, for example <code>GET /temperature</code>.<a href="#section-2-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.3">response line:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.4">
+          <p id="section-2-2.4.1">The first line of a response. It carries the response code in <code>X.YY</code> form and a reason phrase, for example <code>2.05 Content</code>.<a href="#section-2-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.5">option line:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.6">
+          <p id="section-2-2.6.1">A line of the form <code>Name: value</code> that carries one CoAP option, using the registered option name.<a href="#section-2-2.6.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.7">Content-Format annotation:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.8">
+          <p id="section-2-2.8.1">An option line for the <code>Content-Format</code> (or <code>Accept</code>) option in which the content-format number is followed by its media type in parentheses, for example <code>Content-Format: 60 (application/cbor)</code>.<a href="#section-2-2.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.9">payload:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.10">
+          <p id="section-2-2.10.1">The message body, separated from the option lines by a single blank line and written in the text notation of its content format.<a href="#section-2-2.10.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.11">transport annotation:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.12">
+          <p id="section-2-2.12.1">An optional parenthetical on the request or response line that records transport-layer detail such as the message type or token, for example <code>(CON, Token=0x64)</code>.<a href="#section-2-2.12.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.13">EDN:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.14">
+          <p id="section-2-2.14.1">CBOR Extended Diagnostic Notation, the text representation of CBOR data items defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and extended by <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>.<a href="#section-2-2.14.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="principles">
+<section id="section-3">
+      <h2 id="name-design-principles">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-design-principles" class="section-name selfRef">Design Principles</a>
+      </h2>
+<p id="section-3-1">The notation follows five principles.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlNewline" id="section-3-2">
+        <dt id="section-3-2.1">Familiar structure:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.2">
+          <p id="section-3-2.2.1">The notation follows HTTP message syntax <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> where practical, so that a reader accustomed to HTTP examples can read a CoAP exchange without a legend.<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.3">Concise but unambiguous:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.4">
+          <p id="section-3-2.4.1">The notation omits redundant labels while keeping the structure parseable. The method or response code, the options, and the payload each occupy a distinct position.<a href="#section-3-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.5">Payload-format-aware:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.6">
+          <p id="section-3-2.6.1">Each payload is preceded by a Content-Format annotation that names its media type, so that a tool can dispatch the payload to the correct validator.<a href="#section-3-2.6.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.7">Wire-faithful:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.8">
+          <p id="section-3-2.8.1">Options are written with their registered CoAP names, and request targets are composed into URIs rather than invented. The notation reflects the protocol it illustrates.<a href="#section-3-2.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-2.9">Transport-agnostic by default:</dt>
+        <dd style="margin-left: 1.5em" id="section-3-2.10">
+          <p id="section-3-2.10.1">The notation describes the application layer. Transport-layer detail is added only where an example depends on it, using transport annotations (<a href="#transport" class="auto internal xref">Section 4.6</a>).<a href="#section-3-2.10.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="notation">
+<section id="section-4">
+      <h2 id="name-notation">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-notation" class="section-name selfRef">Notation</a>
+      </h2>
+<p id="section-4-1">A request is written as a request line, zero or more option lines, and an optional payload (<a href="#fig-request" class="auto internal xref">Figure 1</a>). A response has the same structure with a response line in place of the request line (<a href="#fig-response" class="auto internal xref">Figure 2</a>).<a href="#section-4-1" class="pilcrow">¶</a></p>
+<span id="name-request-structure"></span><div id="fig-request">
+<figure id="figure-1">
+        <div class="alignLeft art-text artwork" id="section-4-2.1">
+<pre>
+METHOD /path[?query]
+[Option: value]
+[Option: value]
+
+[payload]
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-request-structure" class="selfRef">Request structure</a>
+        </figcaption></figure>
+</div>
+<span id="name-response-structure"></span><div id="fig-response">
+<figure id="figure-2">
+        <div class="alignLeft art-text artwork" id="section-4-3.1">
+<pre>
+CODE Reason-Phrase
+[Option: value]
+[Option: value]
+
+[payload]
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-response-structure" class="selfRef">Response structure</a>
+        </figcaption></figure>
+</div>
+<div id="request-line">
+<section id="section-4.1">
+        <h3 id="name-request-line">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-request-line" class="section-name selfRef">Request Line</a>
+        </h3>
+<p id="section-4.1-1">The request line carries the CoAP method followed by the request target. The method is written as its uppercase name, for example <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>FETCH</code>, <code>PATCH</code>, or <code>iPATCH</code> (<span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>). The target is a composed path beginning with <code>/</code>. Where the host is relevant, the full URI form is used, for example <code>POST coap://broker.example.com/ps</code>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="response-line">
+<section id="section-4.2">
+        <h3 id="name-response-line">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-response-line" class="section-name selfRef">Response Line</a>
+        </h3>
+<p id="section-4.2-1">The response line carries the response code in <code>X.YY</code> form followed by its reason phrase, for example <code>2.01 Created</code> or <code>2.05 Content</code>. The reason phrase is the name registered for that code in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-12.1.2" class="relref">Section 12.1.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="options">
+<section id="section-4.3">
+        <h3 id="name-options">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-options" class="section-name selfRef">Options</a>
+        </h3>
+<p id="section-4.3-1">Each option occupies one line of the form <code>Name: value</code>, using the option name registered in the "CoAP Option Numbers" registry. Uri-Path segments are composed into the target on the request line rather than written as separate <code>Uri-Path</code> option lines, and Uri-Query parameters are composed after a <code>?</code>. Location options in a response are composed in the same way, for example <code>Location-Path: /ps/h9392</code>.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="content-format">
+<section id="section-4.4">
+        <h3 id="name-content-format-annotation">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-content-format-annotation" class="section-name selfRef">Content-Format Annotation</a>
+        </h3>
+<p id="section-4.4-1">An option line for <code>Content-Format</code> or <code>Accept</code> carries the content-format number followed by the corresponding media type in parentheses:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.4-2">
+<pre>
+Content-Format: TBD606 (application/core-pubsub+cbor)
+</pre><a href="#section-4.4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.4-3">The number is the value a sender places on the wire; the parenthetical names the media type for the reader and for validation tooling (<a href="#tool-integration" class="auto internal xref">Section 7</a>). Where a code point has not yet been assigned, a placeholder is used in its place, written as <code>TBDnnn</code> or <code>NNN</code>, and resolved once IANA assigns the value. The examples in this document use <code>TBD606</code> for the <code>application/core-pubsub+cbor</code> format defined in <span>[<a href="#I-D.ietf-core-coap-pubsub" class="cite xref">I-D.ietf-core-coap-pubsub</a>]</span>, which is not yet registered.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="payload">
+<section id="section-4.5">
+        <h3 id="name-payload">
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-payload" class="section-name selfRef">Payload</a>
+        </h3>
+<p id="section-4.5-1">A single blank line separates the last option line from the payload. The payload is written in the text notation of its content format:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlNewline" id="section-4.5-2">
+          <dt id="section-4.5-2.1">CBOR-based formats:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-2.2">
+            <p id="section-4.5-2.2.1">EDN, with inline comments where they aid the reader. A CBOR sequence <span>[<a href="#RFC8742" class="cite xref">RFC8742</a>]</span> is written as the comma-separated EDN form, as in Variant 6 of <a href="#survey" class="auto internal xref">Appendix A</a>.<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.5-2.3">JSON-based formats:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-2.4">
+            <p id="section-4.5-2.4.1">JSON.<a href="#section-4.5-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.5-2.5">Link-format:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-2.6">
+            <p id="section-4.5-2.6.1">CoRE Link Format <span>[<a href="#RFC6690" class="cite xref">RFC6690</a>]</span>.<a href="#section-4.5-2.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.5-2.7">Binary content:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-2.8">
+            <p id="section-4.5-2.8.1">A hexadecimal dump using the <code>h'...'</code> notation of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-4.5-2.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+<p id="section-4.5-3">A payload line that exceeds the available width is folded using the convention of <span>[<a href="#RFC8792" class="cite xref">RFC8792</a>]</span>, so that a tool reconstructs the original payload by removing the folds before parsing.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="transport">
+<section id="section-4.6">
+        <h3 id="name-transport-annotations">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-transport-annotations" class="section-name selfRef">Transport Annotations</a>
+        </h3>
+<p id="section-4.6-1">Where an example depends on transport-layer behavior, the detail is added in parentheses on the request or response line. Common annotations record the message type (<code>CON</code>, <code>NON</code>, <code>ACK</code>), the token, and the message ID, as defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<span id="name-exchange-with-transport-ann"></span><div id="fig-transport">
+<figure id="figure-3">
+          <div class="alignLeft art-text artwork" id="section-4.6-2.1">
+<pre>
+GET /temperature (CON, Token=0x64)
+
+2.05 Content (ACK)
+Observe: 9
+Max-Age: 15
+Content-Format: 0 (text/plain)
+
+22.3 Cel
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-exchange-with-transport-ann" class="selfRef">Exchange with transport annotations</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="multiple">
+<section id="section-4.7">
+        <h3 id="name-multiple-messages">
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-multiple-messages" class="section-name selfRef">Multiple Messages</a>
+        </h3>
+<p id="section-4.7-1">An exchange of more than two messages is written as a sequence of requests and responses, each separated from the next by a blank line. A short label can precede a message where it clarifies the flow.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="grammar">
+<section id="section-4.8">
+        <h3 id="name-grammar">
+<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-grammar" class="section-name selfRef">Grammar</a>
+        </h3>
+<p id="section-4.8-1"><a href="#fig-grammar" class="auto internal xref">Figure 4</a> sketches the structure in ABNF <span>[<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>. The grammar is descriptive: it fixes the lexical shape a tool relies on, not every detail of the method names, option names, or payload syntax, which are drawn from the documents cited in <a href="#relationship" class="auto internal xref">Section 6</a>.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
+<span id="name-descriptive-grammar-of-the-"></span><div id="fig-grammar">
+<figure id="figure-4">
+          <div class="lang-abnf sourcecode" id="section-4.8-2.1">
+<pre>
+message   = start-line *option-line [blank payload]
+start-line = (method SP request-target / code SP reason) [SP annot]
+option-line = option-name ":" SP option-value
+blank     = CRLF
+annot     = "(" *annot-text ")"    ; free-form transport detail
+
+method    = 1*ALPHA                 ; e.g. GET, POST, iPATCH
+request-target = path ["?" query] / absolute-URI
+code      = DIGIT "." 2DIGIT        ; e.g. 2.05
+</pre>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-descriptive-grammar-of-the-" class="selfRef">Descriptive grammar of the notation</a>
+          </figcaption></figure>
+</div>
+<p id="section-4.8-3">An option line uses a single space after the colon. The blank line before a payload is present whenever a payload is present and omitted otherwise. A line that is not an option line and precedes a start line is a label. Transport annotations (<a href="#transport" class="auto internal xref">Section 4.6</a>) are free-form and are not required to be machine-parsed.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="examples">
+<section id="section-5">
+      <h2 id="name-examples">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
+      </h2>
+<p id="section-5-1">The examples in this section use a single sensor, <code>living-room-sensor</code>, throughout.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">A GET on a resource that returns a plain-text representation:<a href="#section-5-2" class="pilcrow">¶</a></p>
+<span id="name-get-with-a-text-payload"></span><div id="fig-get">
+<figure id="figure-5">
+        <div class="lang-coap sourcecode" id="section-5-3.1">
+<pre>
+GET /temperature
+
+2.05 Content
+Content-Format: 0 (text/plain)
+
+22.3 Cel
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-get-with-a-text-payload" class="selfRef">GET with a text payload</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-4">A POST that creates a topic, carrying a CBOR payload in both directions:<a href="#section-5-4" class="pilcrow">¶</a></p>
+<span id="name-post-creating-a-topic-with-"></span><div id="fig-post">
+<figure id="figure-6">
+        <div class="lang-coap sourcecode" id="section-5-5.1">
+<pre>
+POST /ps
+Content-Format: TBD606 (application/core-pubsub+cbor)
+
+{
+  / topic-name /
+  0: "living-room-sensor",
+  / resource-type /
+  2: "core.ps.data"
+}
+
+2.01 Created
+Location-Path: /ps/h9392
+Content-Format: TBD606 (application/core-pubsub+cbor)
+
+{
+  / topic-name /
+  0: "living-room-sensor",
+  / topic-data /
+  1: "/ps/data/1bd0d6d",
+  / resource-type /
+  2: "core.ps.data"
+}
+</pre>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-post-creating-a-topic-with-" class="selfRef">POST creating a topic, with CBOR payloads</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-6">A FETCH that filters a collection, returning a CoRE Link Format response:<a href="#section-5-6" class="pilcrow">¶</a></p>
+<span id="name-fetch-with-a-cbor-filter"></span><div id="fig-fetch">
+<figure id="figure-7">
+        <div class="lang-coap sourcecode" id="section-5-7.1">
+<pre>
+FETCH /ps
+Content-Format: TBD606 (application/core-pubsub+cbor)
+
+{
+  / topic-name /
+  0: "living-room-sensor",
+  / resource-type /
+  2: "core.ps.data"
+}
+
+2.05 Content
+Content-Format: 40 (application/link-format)
+
+&lt;/ps/2e3570&gt;
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-fetch-with-a-cbor-filter" class="selfRef">FETCH with a CBOR filter</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-8">An iPATCH (<span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>) that applies a partial update:<a href="#section-5-8" class="pilcrow">¶</a></p>
+<span id="name-ipatch-applying-a-partial-u"></span><div id="fig-ipatch">
+<figure id="figure-8">
+        <div class="lang-coap sourcecode" id="section-5-9.1">
+<pre>
+iPATCH /ps/h9392
+Content-Format: TBD606 (application/core-pubsub+cbor)
+
+{
+  / observer-check /
+  7: 7200
+}
+
+2.04 Changed
+Content-Format: TBD606 (application/core-pubsub+cbor)
+
+{
+  / observer-check /
+  7: 7200
+}
+</pre>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-ipatch-applying-a-partial-u" class="selfRef">iPATCH applying a partial update</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-10">An Observe (<span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>) subscription and its first notification:<a href="#section-5-10" class="pilcrow">¶</a></p>
+<span id="name-observe-subscription"></span><div id="fig-observe">
+<figure id="figure-9">
+        <div class="lang-coap sourcecode" id="section-5-11.1">
+<pre>
+GET /ps/data/1bd0d6d
+Observe: 0
+
+2.05 Content
+Observe: 1234
+Content-Format: 60 (application/cbor)
+
+{
+  / name /
+  0: "living-room-sensor",
+  / value /
+  2: 22.5
+}
+</pre>
+</div>
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<a href="#name-observe-subscription" class="selfRef">Observe subscription</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-12">Discovery of a broker through <code>.well-known/core</code> (<span>[<a href="#RFC6690" class="cite xref">RFC6690</a>]</span>):<a href="#section-5-12" class="pilcrow">¶</a></p>
+<span id="name-discovery-via-well-known-co"></span><div id="fig-discovery">
+<figure id="figure-10">
+        <div class="lang-coap sourcecode" id="section-5-13.1">
+<pre>
+GET /.well-known/core?rt=core.ps
+
+2.05 Content
+Content-Format: 40 (application/link-format)
+
+&lt;coaps://broker.example.com/ps&gt;;rt="core.ps"
+</pre>
+</div>
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<a href="#name-discovery-via-well-known-co" class="selfRef">Discovery via .well-known/core</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-14">An ACE (<span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>) token request, whose response carries a binary access token as a hexadecimal payload item:<a href="#section-5-14" class="pilcrow">¶</a></p>
+<span id="name-ace-token-request-and-respo"></span><div id="fig-ace">
+<figure id="figure-11">
+        <div class="lang-coap sourcecode" id="section-5-15.1">
+<pre>
+POST /token
+Content-Format: 19 (application/ace+cbor)
+
+{
+  / audience /
+  5: "living-room-sensor",
+  / scope /
+  9: "read"
+}
+
+2.01 Created
+Content-Format: 19 (application/ace+cbor)
+
+{
+  / access_token /
+  1: h'8343a1010aa1054d',
+  / token_type /
+  34: 2,
+  / profile /
+  38: 2 / coap_oscore /
+}
+</pre>
+</div>
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<a href="#name-ace-token-request-and-respo" class="selfRef">ACE token request and response</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-16">An error response carries a diagnostic payload as a text string, without a Content-Format annotation, as described in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.5.2" class="relref">Section 5.5.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-5-16" class="pilcrow">¶</a></p>
+<span id="name-error-response-with-a-diagn"></span><div id="fig-error">
+<figure id="figure-12">
+        <div class="lang-coap sourcecode" id="section-5-17.1">
+<pre>
+GET /ps/data/unknown
+
+4.04 Not Found
+
+Unknown topic
+</pre>
+</div>
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<a href="#name-error-response-with-a-diagn" class="selfRef">Error response with a diagnostic payload</a>
+        </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="relationship">
+<section id="section-6">
+      <h2 id="name-relationship-to-existing-no">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-relationship-to-existing-no" class="section-name selfRef">Relationship to Existing Notations</a>
+      </h2>
+<p id="section-6-1">The notation composes elements that already appear in published documents rather than inventing new ones. The request line follows the method-and-URI form of <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span> and <span>[<a href="#RFC9176" class="cite xref">RFC9176</a>]</span>. The option lines follow the <code>Name: value</code> form used in <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>. The blank line separating options from the payload follows HTTP message syntax <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. The Content-Format annotation, a number followed by a media type in parentheses, follows <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>. CBOR payloads follow the commented EDN style used in <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span> and in CORECONF (<span>[<a href="#I-D.ietf-core-comi" class="cite xref">I-D.ietf-core-comi</a>]</span>). Transport annotations use the terms of <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2"><a href="#survey" class="auto internal xref">Appendix A</a> presents the source notations in full and compares them along these dimensions.<a href="#section-6-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tool-integration">
+<section id="section-7">
+      <h2 id="name-tool-integration">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-tool-integration" class="section-name selfRef">Tool Integration</a>
+      </h2>
+<p id="section-7-1">The notation is structured so that authoring tools can parse and validate it. The mechanism below is one illustrative implementation, in kramdown-rfc; the notation does not depend on a single toolchain. In kramdown-rfc, an example is written in a <code>coap</code> sourcecode block:<a href="#section-7-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7-2">
+<pre>
+~~~ coap
+POST /ps
+Content-Format: TBD606 (application/core-pubsub+cbor)
+
+{
+  / topic-name /
+  0: "living-room-sensor",
+  / resource-type /
+  2: "core.ps.data"
+}
+~~~
+</pre><a href="#section-7-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7-3">A tool processes such a block in four steps: it parses the structure into the first line, the option lines, and the payload; it reads the content-format number from the Content-Format annotation; it dispatches the payload to a validator for that format, such as a CBOR diagnostic parser for CBOR-based formats or a JSON parser for JSON-based formats; and it reports any error with the line number within the block.<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">A block can reference a CDDL schema so that the payload is checked for structure as well as well-formedness:<a href="#section-7-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7-5">
+<pre>
+~~~ coap {::check cddl="pubsub-topic.cddl"}
+POST /ps
+Content-Format: TBD606 (application/core-pubsub+cbor)
+
+{
+  / topic-name /
+  0: "living-room-sensor",
+  / resource-type /
+  2: "core.ps.data"
+}
+~~~
+</pre><a href="#section-7-5" class="pilcrow">¶</a>
+</div>
+<p id="section-7-6">The building blocks for this validation already exist: kramdown-rfc validates JSON sourcecode blocks and has hooks for CBOR diagnostic types; the <code>cbor-diag</code> Ruby gem parses EDN and round-trips it to and from bytes; and the <code>cddl</code> Ruby gem validates CBOR against a CDDL schema. EDN itself is being formalized in <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>.<a href="#section-7-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="seccons">
+<section id="section-8">
+      <h2 id="name-security-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-8-1">This notation appears in documentation, not on the wire, and it introduces no protocol behavior. It therefore adds no threat surface to the protocols whose exchanges it illustrates.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">Examples written in this notation are illustrative and are not normative unless the surrounding document states otherwise. A reader who copies an example into an implementation is responsible for confirming that it matches the normative text.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">Tooling that validates or executes example payloads processes input taken from a document under edit. Such tooling treats the payloads and any referenced CDDL schema as untrusted input: a malformed EDN payload or a hostile schema affects only the document build and does not reach a protocol endpoint.<a href="#section-8-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana">
+<section id="section-9">
+      <h2 id="name-iana-considerations">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-9-1">This document has no IANA actions. The notation refers to CoAP option names, response codes, and content-format numbers by the values registered for them elsewhere; it defines no new code points, media types, or registries.<a href="#section-9-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-10">
+      <h2 id="name-references">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-10.1">
+        <h3 id="name-normative-references">
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC6690">[RFC6690]</dt>
+        <dd>
+<span class="refAuthor">Shelby, Z.</span>, <span class="refTitle">"Constrained RESTful Environments (CoRE) Link Format"</span>, <span class="seriesInfo">RFC 6690</span>, <span class="seriesInfo">DOI 10.17487/RFC6690</span>, <time datetime="2012-08" class="refDate">August 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6690">https://www.rfc-editor.org/rfc/rfc6690</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7252">[RFC7252]</dt>
+        <dd>
+<span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Hartke, K.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7252">https://www.rfc-editor.org/rfc/rfc7252</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7641">[RFC7641]</dt>
+        <dd>
+<span class="refAuthor">Hartke, K.</span>, <span class="refTitle">"Observing Resources in the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7641</span>, <span class="seriesInfo">DOI 10.17487/RFC7641</span>, <time datetime="2015-09" class="refDate">September 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7641">https://www.rfc-editor.org/rfc/rfc7641</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8132">[RFC8132]</dt>
+        <dd>
+<span class="refAuthor">van der Stok, P.</span>, <span class="refAuthor">Bormann, C.</span>, and <span class="refAuthor">A. Sehgal</span>, <span class="refTitle">"PATCH and FETCH Methods for the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 8132</span>, <span class="seriesInfo">DOI 10.17487/RFC8132</span>, <time datetime="2017-04" class="refDate">April 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8132">https://www.rfc-editor.org/rfc/rfc8132</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8949">[RFC8949]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9176">[RFC9176]</dt>
+      <dd>
+<span class="refAuthor">Amsüss, C., Ed.</span>, <span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Koster, M.</span>, <span class="refAuthor">Bormann, C.</span>, and <span class="refAuthor">P. van der Stok</span>, <span class="refTitle">"Constrained RESTful Environments (CoRE) Resource Directory"</span>, <span class="seriesInfo">RFC 9176</span>, <span class="seriesInfo">DOI 10.17487/RFC9176</span>, <time datetime="2022-04" class="refDate">April 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9176">https://www.rfc-editor.org/rfc/rfc9176</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-10.2">
+        <h3 id="name-informative-references">
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-cbor-edn-literals">[I-D.ietf-cbor-edn-literals]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"Concise Diagnostic Notation (CDN)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cbor-edn-literals-26</span>, <time datetime="2026-06-15" class="refDate">15 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-26">https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-26</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
+        <dd>
+<span class="refAuthor">Jimenez, J.</span>, <span class="refAuthor">Koster, M.</span>, and <span class="refAuthor">A. Keränen</span>, <span class="refTitle">"A publish-subscribe architecture for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-coap-pubsub-21</span>, <time datetime="2026-07-02" class="refDate">2 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21">https://datatracker.ietf.org/doc/html/draft-ietf-core-coap-pubsub-21</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-core-comi">[I-D.ietf-core-comi]</dt>
+        <dd>
+<span class="refAuthor">Veillette, M.</span>, <span class="refAuthor">Van der Stok, P.</span>, <span class="refAuthor">Pelov, A.</span>, <span class="refAuthor">Bierman, A.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"CoAP Management Interface (CORECONF)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-comi-21</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-comi-21">https://datatracker.ietf.org/doc/html/draft-ietf-core-comi-21</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5234">[RFC5234]</dt>
+        <dd>
+<span class="refAuthor">Crocker, D., Ed.</span> and <span class="refAuthor">P. Overell</span>, <span class="refTitle">"Augmented BNF for Syntax Specifications: ABNF"</span>, <span class="seriesInfo">STD 68</span>, <span class="seriesInfo">RFC 5234</span>, <span class="seriesInfo">DOI 10.17487/RFC5234</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5234">https://www.rfc-editor.org/rfc/rfc5234</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7959">[RFC7959]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">Z. Shelby, Ed.</span>, <span class="refTitle">"Block-Wise Transfers in the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7959</span>, <span class="seriesInfo">DOI 10.17487/RFC7959</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7959">https://www.rfc-editor.org/rfc/rfc7959</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7967">[RFC7967]</dt>
+        <dd>
+<span class="refAuthor">Bhattacharyya, A.</span>, <span class="refAuthor">Bandyopadhyay, S.</span>, <span class="refAuthor">Pal, A.</span>, and <span class="refAuthor">T. Bose</span>, <span class="refTitle">"Constrained Application Protocol (CoAP) Option for No Server Response"</span>, <span class="seriesInfo">RFC 7967</span>, <span class="seriesInfo">DOI 10.17487/RFC7967</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7967">https://www.rfc-editor.org/rfc/rfc7967</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8742">[RFC8742]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR) Sequences"</span>, <span class="seriesInfo">RFC 8742</span>, <span class="seriesInfo">DOI 10.17487/RFC8742</span>, <time datetime="2020-02" class="refDate">February 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8742">https://www.rfc-editor.org/rfc/rfc8742</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8792">[RFC8792]</dt>
+        <dd>
+<span class="refAuthor">Watsen, K.</span>, <span class="refAuthor">Auerswald, E.</span>, <span class="refAuthor">Farrel, A.</span>, and <span class="refAuthor">Q. Wu</span>, <span class="refTitle">"Handling Long Lines in Content of Internet-Drafts and RFCs"</span>, <span class="seriesInfo">RFC 8792</span>, <span class="seriesInfo">DOI 10.17487/RFC8792</span>, <time datetime="2020-06" class="refDate">June 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8792">https://www.rfc-editor.org/rfc/rfc8792</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9112">[RFC9112]</dt>
+        <dd>
+<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP/1.1"</span>, <span class="seriesInfo">STD 99</span>, <span class="seriesInfo">RFC 9112</span>, <span class="seriesInfo">DOI 10.17487/RFC9112</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9112">https://www.rfc-editor.org/rfc/rfc9112</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9200">[RFC9200]</dt>
+        <dd>
+<span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Wahlstroem, E.</span>, <span class="refAuthor">Erdtman, S.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Authentication and Authorization for Constrained Environments Using the OAuth 2.0 Framework (ACE-OAuth)"</span>, <span class="seriesInfo">RFC 9200</span>, <span class="seriesInfo">DOI 10.17487/RFC9200</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9200">https://www.rfc-editor.org/rfc/rfc9200</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9203">[RFC9203]</dt>
+      <dd>
+<span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, and <span class="refAuthor">M. Gunnarsson</span>, <span class="refTitle">"The Object Security for Constrained RESTful Environments (OSCORE) Profile of the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="seriesInfo">RFC 9203</span>, <span class="seriesInfo">DOI 10.17487/RFC9203</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9203">https://www.rfc-editor.org/rfc/rfc9203</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="survey">
+<section id="appendix-A">
+      <h2 id="name-survey-of-existing-notation">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-survey-of-existing-notation" class="section-name selfRef">Survey of Existing Notation Variants</a>
+      </h2>
+<p id="appendix-A-1">The notation in this document distills the conventions found in published RFCs and active drafts. This appendix records those source notations. Each is shown with a representative exchange and a one-line characterization.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">Variant 1, from <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, embeds message sequence charts with transport-layer detail:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<span id="name-variant-1-rfc-7252-message-"></span><div id="fig-v1">
+<figure id="figure-13">
+        <div class="alignLeft art-text artwork" id="appendix-A-3.1">
+<pre>
+Header: GET (T=CON, Code=0.01, MID=0x7d34)
+Token: 0x20
+Uri-Path: "temperature"
+
+Header: 2.05 Content (T=ACK, Code=2.05, MID=0x7d34)
+Token: 0x20
+Payload: "22.3 C"
+</pre>
+</div>
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<a href="#name-variant-1-rfc-7252-message-" class="selfRef">Variant 1 (RFC 7252): message sequence chart with transport detail</a>
+        </figcaption></figure>
+</div>
+<p id="appendix-A-4">Variant 2, from <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>, shows the CoAP header as raw hexadecimal within numbered sequence diagrams:<a href="#appendix-A-4" class="pilcrow">¶</a></p>
+<span id="name-variant-2-rfc-7641-compact-"></span><div id="fig-v2">
+<figure id="figure-14">
+        <div class="alignLeft art-text artwork" id="appendix-A-5.1">
+<pre>
+Header: GET 0x41011633
+Token: 0x4a
+Uri-Path: temperature
+Observe: 0 (register)
+
+Header: 2.05 0x61451633
+Token: 0x4a
+Observe: 9
+Max-Age: 15
+Payload: "18.5 Cel"
+</pre>
+</div>
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
+<a href="#name-variant-2-rfc-7641-compact-" class="selfRef">Variant 2 (RFC 7641): compact hex header</a>
+        </figcaption></figure>
+</div>
+<p id="appendix-A-6">Variant 3, from <span>[<a href="#RFC9176" class="cite xref">RFC9176</a>]</span>, uses <code>Req:</code>/<code>Res:</code> labels with the full URI on the first line:<a href="#appendix-A-6" class="pilcrow">¶</a></p>
+<span id="name-variant-3-rfc-9176-req-res-"></span><div id="fig-v3">
+<figure id="figure-15">
+        <div class="alignLeft art-text artwork" id="appendix-A-7.1">
+<pre>
+Req: POST coap://rd.example.com/rd?ep=node1
+Content-Format: 40
+Payload: &lt;/sensors/temp&gt;;rt=temperature-c;if=sensor
+
+Res: 2.01 Created
+Location-Path: /rd/4521
+</pre>
+</div>
+<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
+<a href="#name-variant-3-rfc-9176-req-res-" class="selfRef">Variant 3 (RFC 9176): Req/Res shorthand</a>
+        </figcaption></figure>
+</div>
+<p id="appendix-A-8">Variant 4, from <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>, places the method and URI on the first line and lets the payload follow directly, with no explicit marker:<a href="#appendix-A-8" class="pilcrow">¶</a></p>
+<span id="name-variant-4-rfc-8132-method-u"></span><div id="fig-v4">
+<figure id="figure-16">
+        <div class="alignLeft art-text artwork" id="appendix-A-9.1">
+<pre>
+FETCH CoAP://www.example.com/object
+Content-Format: NNN (application/example-map-keys+json)
+Accept: application/json
+
+[ "foo" ]
+
+2.05 Content
+Content-Format: 50 (application/json)
+
+{ "foo": ["bar","baz"] }
+</pre>
+</div>
+<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
+<a href="#name-variant-4-rfc-8132-method-u" class="selfRef">Variant 4 (RFC 8132): method + URI, payload follows</a>
+        </figcaption></figure>
+</div>
+<p id="appendix-A-10">Variant 5, from <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>, prefixes each message with <code>Header:</code> and each body with <code>Payload:</code>, and carries CBOR in diagnostic notation:<a href="#appendix-A-10" class="pilcrow">¶</a></p>
+<span id="name-variant-5-rfc-9203-header-p"></span><div id="fig-v5">
+<figure id="figure-17">
+        <div class="alignLeft art-text artwork" id="appendix-A-11.1">
+<pre>
+Header: POST (Code=0.02)
+Uri-Host: "as.example.com"
+Uri-Path: "token"
+Content-Format: application/ace+cbor
+Payload:
+
+{
+  / audience /
+  5 : "tempSensor4711",
+  / scope /
+  9 : "read"
+}
+</pre>
+</div>
+<figcaption><a href="#figure-17" class="selfRef">Figure 17</a>:
+<a href="#name-variant-5-rfc-9203-header-p" class="selfRef">Variant 5 (RFC 9203): Header/Payload with CBOR diagnostic</a>
+        </figcaption></figure>
+</div>
+<p id="appendix-A-12">Variant 6, from CORECONF (<span>[<a href="#I-D.ietf-core-comi" class="cite xref">I-D.ietf-core-comi</a>]</span>), uses <code>REQ:</code>/<code>RES:</code> labels, an angle-bracketed path, and a parenthetical Content-Format:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
+<span id="name-variant-6-coreconf-req-res-"></span><div id="fig-v6">
+<figure id="figure-18">
+        <div class="alignLeft art-text artwork" id="appendix-A-13.1">
+<pre>
+REQ: FETCH &lt;/c&gt;
+(Content-Format: application/yang-identifiers+cbor-seq)
+
+1723, / current-datetime (SID 1723) /
+[1533, "eth0"] / interface (SID 1533) with name = "eth0" /
+
+RES: 2.05 Content
+(Content-Format: application/yang-instances+cbor-seq)
+
+{ 1723 : "2014-10-26T12:16:31Z" }
+</pre>
+</div>
+<figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
+<a href="#name-variant-6-coreconf-req-res-" class="selfRef">Variant 6 (CORECONF): REQ/RES with angle-bracket path</a>
+        </figcaption></figure>
+</div>
+<p id="appendix-A-14">Variant 7, from the CoAP publish-subscribe work, follows the Variant 5 form with a path-only target and annotates the payload line with a format hint:<a href="#appendix-A-14" class="pilcrow">¶</a></p>
+<span id="name-variant-7-coap-pub-sub-9203"></span><div id="fig-v7">
+<figure id="figure-19">
+        <div class="alignLeft art-text artwork" id="appendix-A-15.1">
+<pre>
+Header: POST (Code=0.02)
+Uri-Path: "ps"
+Content-Format: TBD606 (application/core-pubsub+cbor)
+Payload (in CBOR diagnostic notation):
+
+{
+  / topic-name /
+  0: "living-room-sensor",
+  / resource-type /
+  2: "core.ps.data"
+}
+
+Header: Created (Code=2.01)
+Location-Path: "ps"
+Location-Path: "h9392"
+Content-Format: TBD606 (application/core-pubsub+cbor)
+Payload (in CBOR diagnostic notation):
+
+{
+  / topic-name /
+  0: "living-room-sensor",
+  / topic-data /
+  1: "/ps/data/1bd0d6d",
+  / resource-type /
+  2: "core.ps.data"
+}
+</pre>
+</div>
+<figcaption><a href="#figure-19" class="selfRef">Figure 19</a>:
+<a href="#name-variant-7-coap-pub-sub-9203" class="selfRef">Variant 7 (CoAP pub-sub): 9203-style with path-only URI</a>
+        </figcaption></figure>
+</div>
+<p id="appendix-A-16"><a href="#tab-variants" class="auto internal xref">Table 1</a> compares the variants.<a href="#appendix-A-16" class="pilcrow">¶</a></p>
+<span id="name-comparison-of-existing-coap"></span><div id="tab-variants">
+<table class="center" id="table-1">
+        <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-comparison-of-existing-coap" class="selfRef">Comparison of existing CoAP notation variants</a>
+        </caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Variant</th>
+            <th class="text-left" rowspan="1" colspan="1">First line</th>
+            <th class="text-left" rowspan="1" colspan="1">URI style</th>
+            <th class="text-left" rowspan="1" colspan="1">Payload marker</th>
+            <th class="text-left" rowspan="1" colspan="1">Payload format</th>
+            <th class="text-left" rowspan="1" colspan="1">Transport detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">1 (7252)</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Header: GET (T=CON, Code=0.01, MID=...)</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Split options</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Payload:</code> inline</td>
+            <td class="text-left" rowspan="1" colspan="1">Plain text</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">2 (7641)</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Header: GET 0x...</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Uri-Path option</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Payload:</code> inline</td>
+            <td class="text-left" rowspan="1" colspan="1">Plain text</td>
+            <td class="text-left" rowspan="1" colspan="1">Yes (hex)</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">3 (9176)</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Req: POST coap://host/path</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Full URI</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Payload:</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Link-format</td>
+            <td class="text-left" rowspan="1" colspan="1">No</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">4 (8132)</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>FETCH CoAP://host/path</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Full URI</td>
+            <td class="text-left" rowspan="1" colspan="1">None (follows)</td>
+            <td class="text-left" rowspan="1" colspan="1">JSON</td>
+            <td class="text-left" rowspan="1" colspan="1">No</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">5 (9203)</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Header: POST (Code=0.02)</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Split options</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Payload:</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">CBOR diagnostic</td>
+            <td class="text-left" rowspan="1" colspan="1">No</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">6 (COMI)</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>REQ: FETCH &lt;/path&gt;</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Path in <code>&lt;&gt;</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">None (follows)</td>
+            <td class="text-left" rowspan="1" colspan="1">CBOR diagnostic</td>
+            <td class="text-left" rowspan="1" colspan="1">No</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">7 (pubsub)</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Header: POST (Code=0.02)</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Split options</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Payload (...):</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">CBOR diagnostic</td>
+            <td class="text-left" rowspan="1" colspan="1">No</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<p id="appendix-A-18">Three observations follow from the survey. Variants 5, 6, and 7 all carry CBOR diagnostic payloads but frame the surrounding message differently. Variants 3 and 4 are the closest to HTTP message syntax, while Variants 5 and 7 are the most structured and the most amenable to mechanical parsing. Only Variants 1 and 2 include transport-layer information; the remaining variants describe the application layer alone.<a href="#appendix-A-18" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="requirements">
+<section id="appendix-B">
+      <h2 id="name-requirements-for-a-unified-">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-requirements-for-a-unified-" class="section-name selfRef">Requirements for a Unified Notation</a>
+      </h2>
+<p id="appendix-B-1">The survey yields five requirements, which the notation in the body satisfies:<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="appendix-B-2">
+<li id="appendix-B-2.1">
+          <p id="appendix-B-2.1.1">A first line that identifies the method for a request or the response code for a response, optionally with the URI.<a href="#appendix-B-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="appendix-B-2.2">
+          <p id="appendix-B-2.2.1">Option lines as <code>Name: value</code> pairs.<a href="#appendix-B-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="appendix-B-2.3">
+          <p id="appendix-B-2.3.1">An explicit separator between options and payload.<a href="#appendix-B-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="appendix-B-2.4">
+          <p id="appendix-B-2.4.1">A declared payload format, as a Content-Format value or annotation, so that a tool can validate the payload.<a href="#appendix-B-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="appendix-B-2.5">
+          <p id="appendix-B-2.5.1">A payload in the text notation appropriate to that format: CBOR EDN, JSON, link-format, or a hexadecimal dump.<a href="#appendix-B-2.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ol>
+</section>
+</div>
+<div id="acknowledgements">
+<section id="appendix-C">
+      <h2 id="name-acknowledgements">
+<a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<p id="appendix-C-1">This notation distills conventions from <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>, <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>, <span>[<a href="#RFC9176" class="cite xref">RFC9176</a>]</span>, <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>, and CORECONF, and from discussion in the CoRE Working Group.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-D">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Jaime Jimenez</span></div>
+<div dir="auto" class="left"><span class="org">Ericsson</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:jaime@iki.fi" class="email">jaime@iki.fi</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Carsten Bormann</span></div>
+<div dir="auto" class="left"><span class="org">Universität Bremen TZI</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:cabo@tzi.org" class="email">cabo@tzi.org</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
