@@ -1,0 +1,34 @@
+
+# Exceptions
+# Ignore backup and temporary files
+# Ignore common temporary files and directories
+# Ignore reference files
+# Ignore specific files
+# Ignore specific patterns and directories
+# Ignore versioned files
+*.html
+*.pdf
+*.redxml
+*.swp
+*.txt
+*.upload
+.DS_Store
+*~
+.tags
+/*-[0-9][0-9].xml
+/.*.mk
+/.gems/
+/.refcache
+/.venv/
+/.vscode/
+/lib
+/node_modules/
+/versioned/
+/reference-docs
+Gemfile.lock
+Makefile~
+archive.json
+draft-jimenez-core-coap-diag.xml
+package-lock.json
+report.xml
+!requirements.txt
