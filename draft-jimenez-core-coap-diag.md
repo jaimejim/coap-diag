@@ -96,7 +96,7 @@ Concise but unambiguous:
 : The notation omits redundant labels while keeping the structure parseable. The method or response code, the options, and the payload each occupy a distinct position.
 
 Payload-format-aware:
-: Each payload is preceded by a Content-Format annotation that names its media type, so that a tool can dispatch the payload to the correct validator.
+: A payload is preceded by a Content-Format annotation that names its media type, so that a tool can dispatch the payload to the correct validator. The diagnostic payload of an error response is the exception, as described in {{payload}}.
 
 Wire-faithful:
 : Options are written with their registered CoAP names, and request targets are composed into URIs rather than invented. The notation reflects the protocol it illustrates.
@@ -164,6 +164,8 @@ Link-format:
 
 Binary content:
 : A hexadecimal dump using the `h'...'` notation of {{RFC8949}}.
+
+The diagnostic payload of an error response ({{Section 5.5.2 of RFC7252}}) is written as a text string with no Content-Format annotation, as shown in {{fig-error}}.
 
 A payload line that exceeds the available width is folded using the convention of {{?RFC8792}}, so that a tool reconstructs the original payload by removing the folds before parsing.
 
