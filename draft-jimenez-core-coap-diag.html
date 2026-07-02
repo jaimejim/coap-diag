@@ -22,10 +22,10 @@
     lxml 6.1.1
     natsort 8.4.0
     platformdirs 4.10.0
-    pycountry 26.2.16
+    pycountry 24.6.1
     PyYAML 6.0.3
-    requests 2.34.2
-    wcwidth 0.8.2
+    requests 2.33.1
+    wcwidth 0.8.1
 -->
 <link href="draft-jimenez-core-coap-diag.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1303,7 +1303,7 @@ svg {
         <dd class="break"></dd>
 <dt id="section-3-2.5">Payload-format-aware:</dt>
         <dd style="margin-left: 1.5em" id="section-3-2.6">
-          <p id="section-3-2.6.1">Each payload is preceded by a Content-Format annotation that names its media type, so that a tool can dispatch the payload to the correct validator.<a href="#section-3-2.6.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.6.1">A payload is preceded by a Content-Format annotation that names its media type, so that a tool can dispatch the payload to the correct validator. The diagnostic payload of an error response is the exception, as described in <a href="#payload" class="auto internal xref">Section 4.5</a>.<a href="#section-3-2.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt id="section-3-2.7">Wire-faithful:</dt>
@@ -1421,7 +1421,8 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-4.5-3">A payload line that exceeds the available width is folded using the convention of <span>[<a href="#RFC8792" class="cite xref">RFC8792</a>]</span>, so that a tool reconstructs the original payload by removing the folds before parsing.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-3">The diagnostic payload of an error response (<span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.5.2" class="relref">Section 5.5.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>) is written as a text string with no Content-Format annotation, as shown in <a href="#fig-error" class="auto internal xref">Figure 12</a>.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-4">A payload line that exceeds the available width is folded using the convention of <span>[<a href="#RFC8792" class="cite xref">RFC8792</a>]</span>, so that a tool reconstructs the original payload by removing the folds before parsing.<a href="#section-4.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="transport">

@@ -211,12 +211,12 @@ Internet-Draft                  CoAP Diag                      July 2026
       payload each occupy a distinct position.
 
    Payload-format-aware:
-      Each payload is preceded by a Content-Format annotation that names
+      A payload is preceded by a Content-Format annotation that names
       its media type, so that a tool can dispatch the payload to the
-      correct validator.
+      correct validator.  The diagnostic payload of an error response is
+      the exception, as described in Section 4.5.
 
    Wire-faithful:
-
 
 
 
@@ -326,9 +326,9 @@ Internet-Draft                  CoAP Diag                      July 2026
    Binary content:
       A hexadecimal dump using the h'...' notation of [RFC8949].
 
-   A payload line that exceeds the available width is folded using the
-   convention of [RFC8792], so that a tool reconstructs the original
-   payload by removing the folds before parsing.
+   The diagnostic payload of an error response (Section 5.5.2 of
+   [RFC7252]) is written as a text string with no Content-Format
+   annotation, as shown in Figure 12.
 
 
 
@@ -337,6 +337,10 @@ Jimenez & Bormann        Expires 3 January 2027                 [Page 6]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
+
+   A payload line that exceeds the available width is folded using the
+   convention of [RFC8792], so that a tool reconstructs the original
+   payload by removing the folds before parsing.
 
 4.6.  Transport Annotations
 
@@ -381,11 +385,7 @@ Internet-Draft                  CoAP Diag                      July 2026
 
                Figure 4: Descriptive grammar of the notation
 
-   An option line uses a single space after the colon.  The blank line
-   before a payload is present whenever a payload is present and omitted
-   otherwise.  A line that is not an option line and precedes a start
-   line is a label.  Transport annotations (Section 4.6) are free-form
-   and are not required to be machine-parsed.
+
 
 
 
@@ -393,6 +393,12 @@ Jimenez & Bormann        Expires 3 January 2027                 [Page 7]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
+
+   An option line uses a single space after the colon.  The blank line
+   before a payload is present whenever a payload is present and omitted
+   otherwise.  A line that is not an option line and precedes a start
+   line is a label.  Transport annotations (Section 4.6) are free-form
+   and are not required to be machine-parsed.
 
 5.  Examples
 
@@ -436,12 +442,6 @@ Internet-Draft                  CoAP Diag                      July 2026
      2: "core.ps.data"
    }
 
-            Figure 6: POST creating a topic, with CBOR payloads
-
-   A FETCH that filters a collection, returning a CoRE Link Format
-   response:
-
-
 
 
 
@@ -449,6 +449,11 @@ Jimenez & Bormann        Expires 3 January 2027                 [Page 8]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
+
+            Figure 6: POST creating a topic, with CBOR payloads
+
+   A FETCH that filters a collection, returning a CoRE Link Format
+   response:
 
    FETCH /ps
    Content-Format: TBD606 (application/core-pubsub+cbor)
@@ -488,11 +493,6 @@ Internet-Draft                  CoAP Diag                      July 2026
                  Figure 8: iPATCH applying a partial update
 
    An Observe ([RFC7641]) subscription and its first notification:
-
-
-
-
-
 
 
 
