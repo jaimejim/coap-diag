@@ -8,7 +8,7 @@
 <meta content="Jaime Jimenez" name="author">
 <meta content="Carsten Bormann" name="author">
 <meta content="
-       This document defines a text notation for representing Constrained Application Protocol (CoAP) request/response exchanges in Internet-Drafts and RFCs. The notation balances human readability with mechanical validation: a reader can follow an exchange at a glance, and tooling can be built to parse the message structure and check each payload against its declared content format. The notation is application-layer by default, with transport-layer detail added only where an example depends on it. It is a recommended convention for use in documents and with authoring tools such as kramdown-rfc, not a conformance target; it does not change CoAP or any on-the-wire encoding. 
+       This document defines a text notation for representing Constrained Application Protocol (CoAP) request/response exchanges in Internet-Drafts and RFCs. The notation balances human readability with mechanical validation: a reader can follow an exchange at a glance, and tooling can be built to parse the message structure and check each payload against its declared content format. The notation is application-layer by default, with message-layer detail added only where an example depends on it. It is a recommended convention for use in documents and with authoring tools such as kramdown-rfc, not a conformance target; it does not change CoAP or any on-the-wire encoding. 
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
 <meta content="draft-jimenez-core-coap-diag-latest" name="ietf.draft">
@@ -25,7 +25,7 @@
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.1
+    wcwidth 0.8.2
 -->
 <link href="draft-jimenez-core-coap-diag.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1048,7 +1048,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Jimenez &amp; Bormann</td>
-<td class="center">Expires 3 January 2027</td>
+<td class="center">Expires 5 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,12 +1061,12 @@ svg {
 <dd class="internet-draft">draft-jimenez-core-coap-diag-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-02" class="published">2 July 2026</time>
+<time datetime="2026-07-04" class="published">4 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-03">3 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-01-05">5 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1083,7 +1083,7 @@ svg {
 <h1 id="title">CoAP Diagnostic Message Notation</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a text notation for representing Constrained Application Protocol (CoAP) request/response exchanges in Internet-Drafts and RFCs. The notation balances human readability with mechanical validation: a reader can follow an exchange at a glance, and tooling can be built to parse the message structure and check each payload against its declared content format. The notation is application-layer by default, with transport-layer detail added only where an example depends on it. It is a recommended convention for use in documents and with authoring tools such as kramdown-rfc, not a conformance target; it does not change CoAP or any on-the-wire encoding.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines a text notation for representing Constrained Application Protocol (CoAP) request/response exchanges in Internet-Drafts and RFCs. The notation balances human readability with mechanical validation: a reader can follow an exchange at a glance, and tooling can be built to parse the message structure and check each payload against its declared content format. The notation is application-layer by default, with message-layer detail added only where an example depends on it. It is a recommended convention for use in documents and with authoring tools such as kramdown-rfc, not a conformance target; it does not change CoAP or any on-the-wire encoding.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1119,7 +1119,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1216,7 +1216,7 @@ svg {
             <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-survey-of-existing-notation" class="internal xref">Survey of Existing Notation Variants</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-requirements-for-a-unified-" class="internal xref">Requirements for a Unified Notation</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-design-elements-for-a-unifi" class="internal xref">Design Elements for a Unified Notation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
             <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
@@ -1233,10 +1233,10 @@ svg {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The Constrained Application Protocol (CoAP) <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> defines a request/response model in which clients act on resources hosted by servers. Documents that specify or use CoAP illustrate these exchanges with examples: a request line, a set of options, and a payload, followed by the response. These examples are how a reader first understands a protocol interaction, and they are frequently the part of a document that implementers copy from.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">The Constrained Application Protocol (CoAP) <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> defines a request/response model in which clients send requests on resources hosted by servers, receiving responses. Documents that specify or use CoAP illustrate these exchanges with examples: a request line, a set of options, and a payload, followed by the response. These examples are how a reader first understands a protocol interaction, and they are frequently the part of a document that implementers copy from.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Authors write these examples in divergent, ad hoc notations. Some split the request target into individual <code>Uri-Path</code> and <code>Uri-Query</code> option lines; others compose it into a single URI on the first line. Some prefix each message with <code>Header:</code> and each body with <code>Payload:</code>; others use <code>Req:</code> and <code>Res:</code>, or no markers at all. The same CBOR payload appears with and without a declared content format, and response codes are written both as <code>2.05 Content</code> and as <code>Header: Content (Code=2.05)</code>. <a href="#survey" class="auto internal xref">Appendix A</a> surveys seven such variants drawn from published RFCs and active drafts.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">This divergence has two costs. A reader who moves between documents must re-learn the convention each time. More importantly, no widely used notation is both readable and machine-checkable, so a malformed CBOR or JSON payload in an example is caught only by a human reviewer, if at all. Tooling that could validate payloads exists (<a href="#tool-integration" class="auto internal xref">Section 7</a>), but it needs a predictable structure to parse first.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">This document defines a single notation for CoAP exchanges, for use in documents and in authoring tools. The notation follows HTTP message syntax where practical, composes URIs on the first line, declares the content format of each payload, and represents payloads in the text notation appropriate to that format. It covers requests, responses, and their options and payloads. It does not define a rendering for transport mechanisms such as block-wise transfer <span>[<a href="#RFC7959" class="cite xref">RFC7959</a>]</span>, multicast requests, or suppressed responses <span>[<a href="#RFC7967" class="cite xref">RFC7967</a>]</span>; a document that illustrates those uses whatever notation it finds suitable. It does not change CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, and it does not define or alter any message encoding on the wire.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-4">This document defines a single notation for CoAP exchanges, for use in documents and in authoring tools. The notation follows HTTP message syntax <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span> where practical, composes URIs on the first line, declares the content format of each payload, and represents payloads in the text notation appropriate to that format. It covers requests, responses, and their options and payloads. It does not define a rendering for transport mechanisms such as block-wise transfer <span>[<a href="#RFC7959" class="cite xref">RFC7959</a>]</span>, multicast requests, or suppressed responses <span>[<a href="#RFC7967" class="cite xref">RFC7967</a>]</span>; a document that illustrates those uses whatever notation it finds suitable. It does not change CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, and it does not define or alter any message encoding on the wire.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
@@ -1248,7 +1248,7 @@ svg {
 <span class="break"></span><dl class="dlNewline" id="section-2-2">
         <dt id="section-2-2.1">request line:</dt>
         <dd style="margin-left: 1.5em" id="section-2-2.2">
-          <p id="section-2-2.2.1">The first line of a request. It carries the CoAP method and the request target, for example <code>GET /temperature</code>.<a href="#section-2-2.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-2.2.1">The first line of a request. It carries the text name for the CoAP method and the request target, for example <code>GET /temperature</code>.<a href="#section-2-2.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt id="section-2-2.3">response line:</dt>
@@ -1258,27 +1258,37 @@ svg {
         <dd class="break"></dd>
 <dt id="section-2-2.5">option line:</dt>
         <dd style="margin-left: 1.5em" id="section-2-2.6">
-          <p id="section-2-2.6.1">A line of the form <code>Name: value</code> that carries one CoAP option, using the registered option name.<a href="#section-2-2.6.1" class="pilcrow">¶</a></p>
+          <p id="section-2-2.6.1">A line of the form <code>Name: value</code> that represents one CoAP option, using the registered option name.<a href="#section-2-2.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.7">Content-Format annotation:</dt>
+<dt id="section-2-2.7">annotation:</dt>
         <dd style="margin-left: 1.5em" id="section-2-2.8">
-          <p id="section-2-2.8.1">An option line for the <code>Content-Format</code> (or <code>Accept</code>) option in which the content-format number is followed by its media type in parentheses, for example <code>Content-Format: 60 (application/cbor)</code>.<a href="#section-2-2.8.1" class="pilcrow">¶</a></p>
+          <p id="section-2-2.8.1">Additional information added to a request, response, or option line.<a href="#section-2-2.8.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.9">payload:</dt>
+<dt id="section-2-2.9">Content-Format annotation:</dt>
         <dd style="margin-left: 1.5em" id="section-2-2.10">
-          <p id="section-2-2.10.1">The message body, separated from the option lines by a single blank line and written in the text notation of its content format.<a href="#section-2-2.10.1" class="pilcrow">¶</a></p>
+          <p id="section-2-2.10.1">In an option line for the <code>Content-Format</code> (or <code>Accept</code>) option, the content-format number is followed by its media type (and parameters, if any) in parentheses, for example:<a href="#section-2-2.10.1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2-2.10.2">
+<pre>
+Content-Format: 60 (application/cbor)
+</pre><a href="#section-2-2.10.2" class="pilcrow">¶</a>
+</div>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.11">transport annotation:</dt>
+<dt id="section-2-2.11">payload:</dt>
         <dd style="margin-left: 1.5em" id="section-2-2.12">
-          <p id="section-2-2.12.1">An optional parenthetical on the request or response line that records transport-layer detail such as the message type or token, for example <code>(CON, Token=0x64)</code>.<a href="#section-2-2.12.1" class="pilcrow">¶</a></p>
+          <p id="section-2-2.12.1">The message body, separated from the option lines by a single blank line and written in the text notation of its content format.<a href="#section-2-2.12.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.13">EDN:</dt>
+<dt id="section-2-2.13">transport annotation:</dt>
         <dd style="margin-left: 1.5em" id="section-2-2.14">
-          <p id="section-2-2.14.1">CBOR Extended Diagnostic Notation, the text representation of CBOR data items defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and extended by <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>.<a href="#section-2-2.14.1" class="pilcrow">¶</a></p>
+          <p id="section-2-2.14.1">An optional parenthetical on the request or response line that records message-layer detail such as the message type or token, for example <code>(CON, Token=0x64)</code>.<a href="#section-2-2.14.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.15">EDN:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.16">
+          <p id="section-2-2.16.1">CBOR Diagnostic Notation, the text representation of CBOR data items originally defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-G" class="relref">Appendix G</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> and now in <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>.<span class="cref" id="Namechange">The name EDN and its expansion is currently under discussion in the CBOR WG and might change.</span><a href="#section-2-2.16.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
@@ -1298,7 +1308,7 @@ svg {
         <dd class="break"></dd>
 <dt id="section-3-2.3">Concise but unambiguous:</dt>
         <dd style="margin-left: 1.5em" id="section-3-2.4">
-          <p id="section-3-2.4.1">The notation omits redundant labels while keeping the structure parseable. The method or response code, the options, and the payload each occupy a distinct position.<a href="#section-3-2.4.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.4.1">The notation omits redundant labels while keeping the structure parsable. The method or response code, the options, and the payload each occupy a distinct position.<a href="#section-3-2.4.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt id="section-3-2.5">Payload-format-aware:</dt>
@@ -1313,7 +1323,7 @@ svg {
         <dd class="break"></dd>
 <dt id="section-3-2.9">Transport-agnostic by default:</dt>
         <dd style="margin-left: 1.5em" id="section-3-2.10">
-          <p id="section-3-2.10.1">The notation describes the application layer. Transport-layer detail is added only where an example depends on it, using transport annotations (<a href="#transport" class="auto internal xref">Section 4.6</a>).<a href="#section-3-2.10.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.10.1">The notation describes the application layer. CoAP message-layer detail is added only where an example depends on it, using transport annotations (<a href="#transport" class="auto internal xref">Section 4.6</a>).<a href="#section-3-2.10.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
@@ -1360,7 +1370,10 @@ CODE Reason-Phrase
         <h3 id="name-request-line">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-request-line" class="section-name selfRef">Request Line</a>
         </h3>
-<p id="section-4.1-1">The request line carries the CoAP method followed by the request target. The method is written as its uppercase name, for example <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>FETCH</code>, <code>PATCH</code>, or <code>iPATCH</code> (<span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>). The target is a composed path beginning with <code>/</code>. Where the host is relevant, the full URI form is used, for example <code>POST coap://broker.example.com/ps</code>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">The request line carries the CoAP method followed by the request target.
+The method is written as its (mostly) uppercase name, for example <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>FETCH</code>, <code>PATCH</code>, or <code>iPATCH</code> <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>.
+The target is a composed path shown as a URI reference usually beginning with <code>/</code> (i.e., in absolute-path reference form, see <span><a href="https://rfc-editor.org/rfc/rfc3986#section-4.2" class="relref">Section 4.2</a> of [<a href="#RFC3986" class="cite xref">RFC3986</a>]</span>).
+Where the host and/or URI scheme is relevant, the full URI form is used, for example <code>POST coap://broker.example.com/ps</code>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="response-line">
@@ -1368,7 +1381,7 @@ CODE Reason-Phrase
         <h3 id="name-response-line">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-response-line" class="section-name selfRef">Response Line</a>
         </h3>
-<p id="section-4.2-1">The response line carries the response code in <code>X.YY</code> form followed by its reason phrase, for example <code>2.01 Created</code> or <code>2.05 Content</code>. The reason phrase is the name registered for that code in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-12.1.2" class="relref">Section 12.1.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">The response line carries the response code in <code>X.YY</code> form followed by its reason phrase, for example <code>2.01 Created</code> or <code>2.05 Content</code>. The reason phrase is the name registered for that code in the IANA registry established in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-12.1.2" class="relref">Section 12.1.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="options">
@@ -1376,7 +1389,7 @@ CODE Reason-Phrase
         <h3 id="name-options">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-options" class="section-name selfRef">Options</a>
         </h3>
-<p id="section-4.3-1">Each option occupies one line of the form <code>Name: value</code>, using the option name registered in the "CoAP Option Numbers" registry. Uri-Path segments are composed into the target on the request line rather than written as separate <code>Uri-Path</code> option lines, and Uri-Query parameters are composed after a <code>?</code>. Location options in a response are composed in the same way, for example <code>Location-Path: /ps/h9392</code>.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">Each option occupies one line of the form <code>Name: value</code>, using the option name registered in the "CoAP Option Numbers" registry. Uri-Path segments are composed into the target on the request line rather than written as separate <code>Uri-Path</code> option lines, and Uri-Query parameters are composed after a <code>?</code>. Location options in a response are composed in the same way and represented as an option line, for example <code>Location-Path: /ps/h9392</code>.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="content-format">
@@ -1415,9 +1428,9 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
             <p id="section-4.5-2.6.1">CoRE Link Format <span>[<a href="#RFC6690" class="cite xref">RFC6690</a>]</span>.<a href="#section-4.5-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-4.5-2.7">Binary content:</dt>
+<dt id="section-4.5-2.7">Binary content beyond CBOR:</dt>
           <dd style="margin-left: 1.5em" id="section-4.5-2.8">
-            <p id="section-4.5-2.8.1">A hexadecimal dump using the <code>h'...'</code> notation of <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-4.5-2.8.1" class="pilcrow">¶</a></p>
+            <p id="section-4.5-2.8.1">A hexadecimal dump using the <code>h'...'</code> notation of EDN <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-4.5-2.8.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1430,7 +1443,7 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
         <h3 id="name-transport-annotations">
 <a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-transport-annotations" class="section-name selfRef">Transport Annotations</a>
         </h3>
-<p id="section-4.6-1">Where an example depends on transport-layer behavior, the detail is added in parentheses on the request or response line. Common annotations record the message type (<code>CON</code>, <code>NON</code>, <code>ACK</code>), the token, and the message ID, as defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.6-1">Where an example depends on CoAP message-layer behavior, the detail is added in parentheses on the request or response line. Common annotations record the message type (<code>CON</code>, <code>NON</code>, <code>ACK</code>), the token, and the message ID, as defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
 <span id="name-exchange-with-transport-ann"></span><div id="fig-transport">
 <figure id="figure-3">
           <div class="alignLeft art-text artwork" id="section-4.6-2.1">
@@ -1446,7 +1459,7 @@ Content-Format: 0 (text/plain)
 </pre>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
-<a href="#name-exchange-with-transport-ann" class="selfRef">Exchange with transport annotations</a>
+<a href="#name-exchange-with-transport-ann" class="selfRef">Exchange with transport annotations for message type and token</a>
           </figcaption></figure>
 </div>
 </section>
@@ -1469,15 +1482,16 @@ Content-Format: 0 (text/plain)
 <figure id="figure-4">
           <div class="lang-abnf sourcecode" id="section-4.8-2.1">
 <pre>
-message   = start-line *option-line [blank payload]
-start-line = (method SP request-target / code SP reason) [SP annot]
-option-line = option-name ":" SP option-value
-blank     = CRLF
-annot     = "(" *annot-text ")"    ; free-form transport detail
+message = start-line *option-line [blank-line payload]
+start-line = (method SP request-target / code SP reason)
+             [SP annot] newline
+option-line = option-name ":" SP option-value newline
+blank-line = newline
+annot = "(" *annot-text ")"    ; free-form transport detail
 
-method    = 1*ALPHA                 ; e.g. GET, POST, iPATCH
+method = 1*ALPHA                 ; e.g. GET, POST, iPATCH
 request-target = path ["?" query] / absolute-URI
-code      = DIGIT "." 2DIGIT        ; e.g. 2.05
+code = DIGIT "." 2DIGIT        ; e.g. 2.05
 </pre>
 </div>
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
@@ -1570,7 +1584,7 @@ Content-Format: 40 (application/link-format)
 <a href="#name-fetch-with-a-cbor-filter" class="selfRef">FETCH with a CBOR filter</a>
         </figcaption></figure>
 </div>
-<p id="section-5-8">An iPATCH (<span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>) that applies a partial update:<a href="#section-5-8" class="pilcrow">¶</a></p>
+<p id="section-5-8">An iPATCH <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span> that applies a partial update:<a href="#section-5-8" class="pilcrow">¶</a></p>
 <span id="name-ipatch-applying-a-partial-u"></span><div id="fig-ipatch">
 <figure id="figure-8">
         <div class="lang-coap sourcecode" id="section-5-9.1">
@@ -1596,7 +1610,7 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 <a href="#name-ipatch-applying-a-partial-u" class="selfRef">iPATCH applying a partial update</a>
         </figcaption></figure>
 </div>
-<p id="section-5-10">An Observe (<span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>) subscription and its first notification:<a href="#section-5-10" class="pilcrow">¶</a></p>
+<p id="section-5-10">An Observe <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> subscription and its first notification:<a href="#section-5-10" class="pilcrow">¶</a></p>
 <span id="name-observe-subscription"></span><div id="fig-observe">
 <figure id="figure-9">
         <div class="lang-coap sourcecode" id="section-5-11.1">
@@ -1620,7 +1634,7 @@ Content-Format: 60 (application/cbor)
 <a href="#name-observe-subscription" class="selfRef">Observe subscription</a>
         </figcaption></figure>
 </div>
-<p id="section-5-12">Discovery of a broker through <code>.well-known/core</code> (<span>[<a href="#RFC6690" class="cite xref">RFC6690</a>]</span>):<a href="#section-5-12" class="pilcrow">¶</a></p>
+<p id="section-5-12">Discovery of a broker through <code>.well-known/core</code> <span>[<a href="#RFC6690" class="cite xref">RFC6690</a>]</span>:<a href="#section-5-12" class="pilcrow">¶</a></p>
 <span id="name-discovery-via-well-known-co"></span><div id="fig-discovery">
 <figure id="figure-10">
         <div class="lang-coap sourcecode" id="section-5-13.1">
@@ -1637,7 +1651,7 @@ Content-Format: 40 (application/link-format)
 <a href="#name-discovery-via-well-known-co" class="selfRef">Discovery via .well-known/core</a>
         </figcaption></figure>
 </div>
-<p id="section-5-14">An ACE (<span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>) token request, whose response carries a binary access token as a hexadecimal payload item:<a href="#section-5-14" class="pilcrow">¶</a></p>
+<p id="section-5-14">An ACE <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> token request and response:<a href="#section-5-14" class="pilcrow">¶</a></p>
 <span id="name-ace-token-request-and-respo"></span><div id="fig-ace">
 <figure id="figure-11">
         <div class="lang-coap sourcecode" id="section-5-15.1">
@@ -1692,8 +1706,8 @@ Unknown topic
       <h2 id="name-relationship-to-existing-no">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-relationship-to-existing-no" class="section-name selfRef">Relationship to Existing Notations</a>
       </h2>
-<p id="section-6-1">The notation composes elements that already appear in published documents rather than inventing new ones. The request line follows the method-and-URI form of <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span> and <span>[<a href="#RFC9176" class="cite xref">RFC9176</a>]</span>. The option lines follow the <code>Name: value</code> form used in <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>. The blank line separating options from the payload follows HTTP message syntax <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. The Content-Format annotation, a number followed by a media type in parentheses, follows <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>. CBOR payloads follow the commented EDN style used in <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span> and in CORECONF (<span>[<a href="#I-D.ietf-core-comi" class="cite xref">I-D.ietf-core-comi</a>]</span>). Transport annotations use the terms of <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2"><a href="#survey" class="auto internal xref">Appendix A</a> presents the source notations in full and compares them along these dimensions.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-1">The notation composes elements that already appear in published documents rather than inventing new ones. The request line follows the method-and-URI form of <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span> and <span>[<a href="#RFC9176" class="cite xref">RFC9176</a>]</span>. The option lines follow the <code>Name: value</code> form used in <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>. The blank line separating options from the payload follows HTTP message syntax <span>[<a href="#RFC9112" class="cite xref">RFC9112</a>]</span>. The Content-Format annotation, a number followed by a media type in parentheses, follows <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>. CBOR payloads follow the commented EDN style used in <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span> and in CORECONF <span>[<a href="#I-D.ietf-core-comi" class="cite xref">I-D.ietf-core-comi</a>]</span>. Transport annotations use the terms of <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2"><a href="#survey" class="auto internal xref">Appendix A</a> presents the source notations in more detail and compares them along these dimensions.<a href="#section-6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="tool-integration">
@@ -1718,10 +1732,10 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 </pre><a href="#section-7-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7-3">A tool processes such a block in four steps: it parses the structure into the first line, the option lines, and the payload; it reads the content-format number from the Content-Format annotation; it dispatches the payload to a validator for that format, such as a CBOR diagnostic parser for CBOR-based formats or a JSON parser for JSON-based formats; and it reports any error with the line number within the block.<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4">A block can reference a CDDL schema so that the payload is checked for structure as well as well-formedness:<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-4">A block can reference a CDDL data definition so that the payload is checked for structure as well as well-formedness:<a href="#section-7-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7-5">
 <pre>
-~~~ coap {::check cddl="pubsub-topic.cddl"}
+~~~ coap
 POST /ps
 Content-Format: TBD606 (application/core-pubsub+cbor)
 
@@ -1732,9 +1746,10 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
   2: "core.ps.data"
 }
 ~~~
+{: check-cddl="pubsub-topic.cddl"}
 </pre><a href="#section-7-5" class="pilcrow">¶</a>
 </div>
-<p id="section-7-6">The building blocks for this validation already exist: kramdown-rfc validates JSON sourcecode blocks and has hooks for CBOR diagnostic types; the <code>cbor-diag</code> Ruby gem parses EDN and round-trips it to and from bytes; and the <code>cddl</code> Ruby gem validates CBOR against a CDDL schema. EDN itself is being formalized in <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>.<a href="#section-7-6" class="pilcrow">¶</a></p>
+<p id="section-7-6">The building blocks for this validation already exist: kramdown-rfc validates JSON sourcecode blocks and has hooks for CBOR diagnostic types; the <code>edn-abnf</code> Ruby gem parses EDN (ABNF in <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>) and round-trips it to and from bytes; and the <code>cddl</code> Ruby gem validates CBOR against a CDDL data definition.<a href="#section-7-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="seccons">
@@ -1744,7 +1759,7 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
       </h2>
 <p id="section-8-1">This notation appears in documentation, not on the wire, and it introduces no protocol behavior. It therefore adds no threat surface to the protocols whose exchanges it illustrates.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">Examples written in this notation are illustrative and are not normative unless the surrounding document states otherwise. A reader who copies an example into an implementation is responsible for confirming that it matches the normative text.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">Tooling that validates or executes example payloads processes input taken from a document under edit. Such tooling treats the payloads and any referenced CDDL schema as untrusted input: a malformed EDN payload or a hostile schema affects only the document build and does not reach a protocol endpoint.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-3">Tooling that validates or executes example payloads processes input taken from a document under edit. Such tooling treats the payloads and any referenced CDDL data definition as untrusted input: a malformed EDN payload or a hostile data definition affects only the document build and does not reach a protocol endpoint.<a href="#section-8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana">
@@ -1766,6 +1781,10 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 <a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="RFC3986">[RFC3986]</dt>
+        <dd>
+<span class="refAuthor">Berners-Lee, T.</span>, <span class="refAuthor">Fielding, R.</span>, and <span class="refAuthor">L. Masinter</span>, <span class="refTitle">"Uniform Resource Identifier (URI): Generic Syntax"</span>, <span class="seriesInfo">STD 66</span>, <span class="seriesInfo">RFC 3986</span>, <span class="seriesInfo">DOI 10.17487/RFC3986</span>, <time datetime="2005-01" class="refDate">January 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3986">https://www.rfc-editor.org/rfc/rfc3986</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC6690">[RFC6690]</dt>
         <dd>
 <span class="refAuthor">Shelby, Z.</span>, <span class="refTitle">"Constrained RESTful Environments (CoRE) Link Format"</span>, <span class="seriesInfo">RFC 6690</span>, <span class="seriesInfo">DOI 10.17487/RFC6690</span>, <time datetime="2012-08" class="refDate">August 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6690">https://www.rfc-editor.org/rfc/rfc6690</a>&gt;</span>. </dd>
@@ -1777,6 +1796,10 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 <dt id="RFC7641">[RFC7641]</dt>
         <dd>
 <span class="refAuthor">Hartke, K.</span>, <span class="refTitle">"Observing Resources in the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7641</span>, <span class="seriesInfo">DOI 10.17487/RFC7641</span>, <time datetime="2015-09" class="refDate">September 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7641">https://www.rfc-editor.org/rfc/rfc7641</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7959">[RFC7959]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">Z. Shelby, Ed.</span>, <span class="refTitle">"Block-Wise Transfers in the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7959</span>, <span class="seriesInfo">DOI 10.17487/RFC7959</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7959">https://www.rfc-editor.org/rfc/rfc7959</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8132">[RFC8132]</dt>
         <dd>
@@ -1815,13 +1838,13 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
         <dd>
 <span class="refAuthor">Crocker, D., Ed.</span> and <span class="refAuthor">P. Overell</span>, <span class="refTitle">"Augmented BNF for Syntax Specifications: ABNF"</span>, <span class="seriesInfo">STD 68</span>, <span class="seriesInfo">RFC 5234</span>, <span class="seriesInfo">DOI 10.17487/RFC5234</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5234">https://www.rfc-editor.org/rfc/rfc5234</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC7959">[RFC7959]</dt>
-        <dd>
-<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">Z. Shelby, Ed.</span>, <span class="refTitle">"Block-Wise Transfers in the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7959</span>, <span class="seriesInfo">DOI 10.17487/RFC7959</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7959">https://www.rfc-editor.org/rfc/rfc7959</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC7967">[RFC7967]</dt>
         <dd>
 <span class="refAuthor">Bhattacharyya, A.</span>, <span class="refAuthor">Bandyopadhyay, S.</span>, <span class="refAuthor">Pal, A.</span>, and <span class="refAuthor">T. Bose</span>, <span class="refTitle">"Constrained Application Protocol (CoAP) Option for No Server Response"</span>, <span class="seriesInfo">RFC 7967</span>, <span class="seriesInfo">DOI 10.17487/RFC7967</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7967">https://www.rfc-editor.org/rfc/rfc7967</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8610">[RFC8610]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8742">[RFC8742]</dt>
         <dd>
@@ -1854,7 +1877,7 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-survey-of-existing-notation" class="section-name selfRef">Survey of Existing Notation Variants</a>
       </h2>
 <p id="appendix-A-1">The notation in this document distills the conventions found in published RFCs and active drafts. This appendix records those source notations. Each is shown with a representative exchange and a one-line characterization.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">Variant 1, from <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, embeds message sequence charts with transport-layer detail:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">Variant 1, from <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, embeds message sequence charts with message-layer detail:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <span id="name-variant-1-rfc-7252-message-"></span><div id="fig-v1">
 <figure id="figure-13">
         <div class="alignLeft art-text artwork" id="appendix-A-3.1">
@@ -1954,7 +1977,7 @@ Payload:
 <a href="#name-variant-5-rfc-9203-header-p" class="selfRef">Variant 5 (RFC 9203): Header/Payload with CBOR diagnostic</a>
         </figcaption></figure>
 </div>
-<p id="appendix-A-12">Variant 6, from CORECONF (<span>[<a href="#I-D.ietf-core-comi" class="cite xref">I-D.ietf-core-comi</a>]</span>), uses <code>REQ:</code>/<code>RES:</code> labels, an angle-bracketed path, and a parenthetical Content-Format:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
+<p id="appendix-A-12">Variant 6, from CORECONF <span>[<a href="#I-D.ietf-core-comi" class="cite xref">I-D.ietf-core-comi</a>]</span>, uses <code>REQ:</code>/<code>RES:</code> labels, an angle-bracketed path, and a parenthetical Content-Format:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
 <span id="name-variant-6-coreconf-req-res-"></span><div id="fig-v6">
 <figure id="figure-18">
         <div class="alignLeft art-text artwork" id="appendix-A-13.1">
@@ -2112,15 +2135,16 @@ Payload (in CBOR diagnostic notation):
         </tbody>
       </table>
 </div>
-<p id="appendix-A-18">Three observations follow from the survey. Variants 5, 6, and 7 all carry CBOR diagnostic payloads but frame the surrounding message differently. Variants 3 and 4 are the closest to HTTP message syntax, while Variants 5 and 7 are the most structured and the most amenable to mechanical parsing. Only Variants 1 and 2 include transport-layer information; the remaining variants describe the application layer alone.<a href="#appendix-A-18" class="pilcrow">¶</a></p>
+<p id="appendix-A-18">Three observations follow from the survey. Variants 5, 6, and 7 all carry CBOR diagnostic payloads but frame the surrounding message differently. Variants 3 and 4 are the closest to HTTP message syntax, while Variants 5 and 7 are the most structured and the most amenable to mechanical parsing. Only Variants 1 and 2 include message-layer information; the remaining variants describe the application layer alone.<a href="#appendix-A-18" class="pilcrow">¶</a></p>
+<p id="appendix-A-19"><span class="cref" id="todo1">TODO: Look at RFC 8323 and signaling codes (7.xx).</span><a href="#appendix-A-19" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="requirements">
 <section id="appendix-B">
-      <h2 id="name-requirements-for-a-unified-">
-<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-requirements-for-a-unified-" class="section-name selfRef">Requirements for a Unified Notation</a>
+      <h2 id="name-design-elements-for-a-unifi">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-design-elements-for-a-unifi" class="section-name selfRef">Design Elements for a Unified Notation</a>
       </h2>
-<p id="appendix-B-1">The survey yields five requirements, which the notation in the body satisfies:<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">The survey yields five design elements, which the notation in the body satisfies:<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="appendix-B-2">
 <li id="appendix-B-2.1">
           <p id="appendix-B-2.1.1">A first line that identifies the method for a request or the response code for a response, optionally with the URI.<a href="#appendix-B-2.1.1" class="pilcrow">¶</a></p>
@@ -2164,6 +2188,13 @@ Payload (in CBOR diagnostic notation):
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Carsten Bormann</span></div>
 <div dir="auto" class="left"><span class="org">Universität Bremen TZI</span></div>
+<div dir="auto" class="left"><span class="street-address">Postfach 330440</span></div>
+<div dir="auto" class="left"><span class="locality">D-28359 Bremen</span></div>
+<div dir="auto" class="left"><span class="country-name">Germany</span></div>
+<div class="tel">
+<span>Phone:</span>
+<a href="tel:+49-421-218-63921" class="tel">+49-421-218-63921</a>
+</div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:cabo@tzi.org" class="email">cabo@tzi.org</a>

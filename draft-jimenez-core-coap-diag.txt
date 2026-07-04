@@ -5,8 +5,8 @@
 CoRE Working Group                                            J. Jimenez
 Internet-Draft                                                  Ericsson
 Intended status: Informational                                C. Bormann
-Expires: 3 January 2027                           Universität Bremen TZI
-                                                             2 July 2026
+Expires: 5 January 2027                           Universität Bremen TZI
+                                                             4 July 2026
 
 
                     CoAP Diagnostic Message Notation
@@ -20,7 +20,7 @@ Abstract
    mechanical validation: a reader can follow an exchange at a glance,
    and tooling can be built to parse the message structure and check
    each payload against its declared content format.  The notation is
-   application-layer by default, with transport-layer detail added only
+   application-layer by default, with message-layer detail added only
    where an example depends on it.  It is a recommended convention for
    use in documents and with authoring tools such as kramdown-rfc, not a
    conformance target; it does not change CoAP or any on-the-wire
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Jimenez & Bormann        Expires 3 January 2027                 [Page 1]
+Jimenez & Bormann        Expires 5 January 2027                 [Page 1]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
@@ -63,7 +63,7 @@ Internet-Draft                  CoAP Diag                      July 2026
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 January 2027.
+   This Internet-Draft will expire on 5 January 2027.
 
 Copyright Notice
 
@@ -86,7 +86,7 @@ Table of Contents
    3.  Design Principles . . . . . . . . . . . . . . . . . . . . . .   4
    4.  Notation  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
      4.1.  Request Line  . . . . . . . . . . . . . . . . . . . . . .   5
-     4.2.  Response Line . . . . . . . . . . . . . . . . . . . . . .   5
+     4.2.  Response Line . . . . . . . . . . . . . . . . . . . . . .   6
      4.3.  Options . . . . . . . . . . . . . . . . . . . . . . . . .   6
      4.4.  Content-Format Annotation . . . . . . . . . . . . . . . .   6
      4.5.  Payload . . . . . . . . . . . . . . . . . . . . . . . . .   6
@@ -102,14 +102,14 @@ Table of Contents
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  13
      10.2.  Informative References . . . . . . . . . . . . . . . . .  14
    Appendix A.  Survey of Existing Notation Variants . . . . . . . .  15
-   Appendix B.  Requirements for a Unified Notation  . . . . . . . .  19
+   Appendix B.  Design Elements for a Unified Notation . . . . . . .  19
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  20
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 
 
 
-Jimenez & Bormann        Expires 3 January 2027                 [Page 2]
+Jimenez & Bormann        Expires 5 January 2027                 [Page 2]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
@@ -117,12 +117,13 @@ Internet-Draft                  CoAP Diag                      July 2026
 1.  Introduction
 
    The Constrained Application Protocol (CoAP) [RFC7252] defines a
-   request/response model in which clients act on resources hosted by
-   servers.  Documents that specify or use CoAP illustrate these
-   exchanges with examples: a request line, a set of options, and a
-   payload, followed by the response.  These examples are how a reader
-   first understands a protocol interaction, and they are frequently the
-   part of a document that implementers copy from.
+   request/response model in which clients send requests on resources
+   hosted by servers, receiving responses.  Documents that specify or
+   use CoAP illustrate these exchanges with examples: a request line, a
+   set of options, and a payload, followed by the response.  These
+   examples are how a reader first understands a protocol interaction,
+   and they are frequently the part of a document that implementers copy
+   from.
 
    Authors write these examples in divergent, ad hoc notations.  Some
    split the request target into individual Uri-Path and Uri-Query
@@ -143,44 +144,50 @@ Internet-Draft                  CoAP Diag                      July 2026
 
    This document defines a single notation for CoAP exchanges, for use
    in documents and in authoring tools.  The notation follows HTTP
-   message syntax where practical, composes URIs on the first line,
-   declares the content format of each payload, and represents payloads
-   in the text notation appropriate to that format.  It covers requests,
-   responses, and their options and payloads.  It does not define a
-   rendering for transport mechanisms such as block-wise transfer
-   [RFC7959], multicast requests, or suppressed responses [RFC7967]; a
-   document that illustrates those uses whatever notation it finds
-   suitable.  It does not change CoAP [RFC7252], and it does not define
-   or alter any message encoding on the wire.
+   message syntax [RFC9112] where practical, composes URIs on the first
+   line, declares the content format of each payload, and represents
+   payloads in the text notation appropriate to that format.  It covers
+   requests, responses, and their options and payloads.  It does not
+   define a rendering for transport mechanisms such as block-wise
+   transfer [RFC7959], multicast requests, or suppressed responses
+   [RFC7967]; a document that illustrates those uses whatever notation
+   it finds suitable.  It does not change CoAP [RFC7252], and it does
+   not define or alter any message encoding on the wire.
 
 2.  Terminology
 
    This document uses the following terms.
 
    request line:
-      The first line of a request.  It carries the CoAP method and the
-      request target, for example GET /temperature.
-
-   response line:
+      The first line of a request.  It carries the text name for the
+      CoAP method and the request target, for example GET /temperature.
 
 
 
-Jimenez & Bormann        Expires 3 January 2027                 [Page 3]
+
+Jimenez & Bormann        Expires 5 January 2027                 [Page 3]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
 
+   response line:
       The first line of a response.  It carries the response code in
       X.YY form and a reason phrase, for example 2.05 Content.
 
    option line:
-      A line of the form Name: value that carries one CoAP option, using
-      the registered option name.
+      A line of the form Name: value that represents one CoAP option,
+      using the registered option name.
+
+   annotation:
+      Additional information added to a request, response, or option
+      line.
 
    Content-Format annotation:
-      An option line for the Content-Format (or Accept) option in which
-      the content-format number is followed by its media type in
-      parentheses, for example Content-Format: 60 (application/cbor).
+      In an option line for the Content-Format (or Accept) option, the
+      content-format number is followed by its media type (and
+      parameters, if any) in parentheses, for example:
+
+      Content-Format: 60 (application/cbor)
 
    payload:
       The message body, separated from the option lines by a single
@@ -188,13 +195,15 @@ Internet-Draft                  CoAP Diag                      July 2026
 
    transport annotation:
       An optional parenthetical on the request or response line that
-      records transport-layer detail such as the message type or token,
+      records message-layer detail such as the message type or token,
       for example (CON, Token=0x64).
 
    EDN:
-      CBOR Extended Diagnostic Notation, the text representation of CBOR
-      data items defined in Section 8 of [RFC8949] and extended by
-      [I-D.ietf-cbor-edn-literals].
+      CBOR Diagnostic Notation, the text representation of CBOR data
+      items originally defined in Section 8 of [RFC8949] and Appendix G
+      of [RFC8610] and now in [I-D.ietf-cbor-edn-literals].
+      // The name EDN and its expansion is currently under discussion in
+      // the CBOR WG and might change.
 
 3.  Design Principles
 
@@ -207,8 +216,15 @@ Internet-Draft                  CoAP Diag                      July 2026
 
    Concise but unambiguous:
       The notation omits redundant labels while keeping the structure
-      parseable.  The method or response code, the options, and the
+      parsable.  The method or response code, the options, and the
       payload each occupy a distinct position.
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                 [Page 4]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
 
    Payload-format-aware:
       A payload is preceded by a Content-Format annotation that names
@@ -217,21 +233,12 @@ Internet-Draft                  CoAP Diag                      July 2026
       the exception, as described in Section 4.5.
 
    Wire-faithful:
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                 [Page 4]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
-
       Options are written with their registered CoAP names, and request
       targets are composed into URIs rather than invented.  The notation
       reflects the protocol it illustrates.
 
    Transport-agnostic by default:
-      The notation describes the application layer.  Transport-layer
+      The notation describes the application layer.  CoAP message-layer
       detail is added only where an example depends on it, using
       transport annotations (Section 4.6).
 
@@ -261,26 +268,28 @@ Internet-Draft                  CoAP Diag                      July 2026
 4.1.  Request Line
 
    The request line carries the CoAP method followed by the request
-   target.  The method is written as its uppercase name, for example
-   GET, POST, PUT, DELETE, FETCH, PATCH, or iPATCH ([RFC8132]).  The
-   target is a composed path beginning with /. Where the host is
+   target.  The method is written as its (mostly) uppercase name, for
+   example GET, POST, PUT, DELETE, FETCH, PATCH, or iPATCH [RFC8132].
+   The target is a composed path shown as a URI reference usually
+   beginning with / (i.e., in absolute-path reference form, see
+   Section 4.2 of [RFC3986]).  Where the host and/or URI scheme is
    relevant, the full URI form is used, for example POST
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                 [Page 5]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
+
    coap://broker.example.com/ps.
 
 4.2.  Response Line
 
    The response line carries the response code in X.YY form followed by
    its reason phrase, for example 2.01 Created or 2.05 Content.  The
-   reason phrase is the name registered for that code in Section 12.1.2
-   of [RFC7252].
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                 [Page 5]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
+   reason phrase is the name registered for that code in the IANA
+   registry established in Section 12.1.2 of [RFC7252].
 
 4.3.  Options
 
@@ -289,7 +298,8 @@ Internet-Draft                  CoAP Diag                      July 2026
    Path segments are composed into the target on the request line rather
    than written as separate Uri-Path option lines, and Uri-Query
    parameters are composed after a ?. Location options in a response are
-   composed in the same way, for example Location-Path: /ps/h9392.
+   composed in the same way and represented as an option line, for
+   example Location-Path: /ps/h9392.
 
 4.4.  Content-Format Annotation
 
@@ -320,23 +330,23 @@ Internet-Draft                  CoAP Diag                      July 2026
    JSON-based formats:
       JSON.
 
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                 [Page 6]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
+
    Link-format:
       CoRE Link Format [RFC6690].
 
-   Binary content:
-      A hexadecimal dump using the h'...' notation of [RFC8949].
+   Binary content beyond CBOR:
+      A hexadecimal dump using the h'...' notation of EDN [RFC8949].
 
    The diagnostic payload of an error response (Section 5.5.2 of
    [RFC7252]) is written as a text string with no Content-Format
    annotation, as shown in Figure 12.
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                 [Page 6]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
 
    A payload line that exceeds the available width is folded using the
    convention of [RFC8792], so that a tool reconstructs the original
@@ -344,8 +354,8 @@ Internet-Draft                  CoAP Diag                      July 2026
 
 4.6.  Transport Annotations
 
-   Where an example depends on transport-layer behavior, the detail is
-   added in parentheses on the request or response line.  Common
+   Where an example depends on CoAP message-layer behavior, the detail
+   is added in parentheses on the request or response line.  Common
    annotations record the message type (CON, NON, ACK), the token, and
    the message ID, as defined in [RFC7252]:
 
@@ -358,7 +368,8 @@ Internet-Draft                  CoAP Diag                      July 2026
 
    22.3 Cel
 
-               Figure 3: Exchange with transport annotations
+       Figure 3: Exchange with transport annotations for message type
+                                 and token
 
 4.7.  Multiple Messages
 
@@ -373,26 +384,28 @@ Internet-Draft                  CoAP Diag                      July 2026
    detail of the method names, option names, or payload syntax, which
    are drawn from the documents cited in Section 6.
 
-   message   = start-line *option-line [blank payload]
-   start-line = (method SP request-target / code SP reason) [SP annot]
-   option-line = option-name ":" SP option-value
-   blank     = CRLF
-   annot     = "(" *annot-text ")"    ; free-form transport detail
-
-   method    = 1*ALPHA                 ; e.g. GET, POST, iPATCH
-   request-target = path ["?" query] / absolute-URI
-   code      = DIGIT "." 2DIGIT        ; e.g. 2.05
-
-               Figure 4: Descriptive grammar of the notation
 
 
 
 
 
-Jimenez & Bormann        Expires 3 January 2027                 [Page 7]
+Jimenez & Bormann        Expires 5 January 2027                 [Page 7]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
+
+   message = start-line *option-line [blank-line payload]
+   start-line = (method SP request-target / code SP reason)
+                [SP annot] newline
+   option-line = option-name ":" SP option-value newline
+   blank-line = newline
+   annot = "(" *annot-text ")"    ; free-form transport detail
+
+   method = 1*ALPHA                 ; e.g. GET, POST, iPATCH
+   request-target = path ["?" query] / absolute-URI
+   code = DIGIT "." 2DIGIT        ; e.g. 2.05
+
+               Figure 4: Descriptive grammar of the notation
 
    An option line uses a single space after the colon.  The blank line
    before a payload is present whenever a payload is present and omitted
@@ -419,6 +432,24 @@ Internet-Draft                  CoAP Diag                      July 2026
    A POST that creates a topic, carrying a CBOR payload in both
    directions:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                 [Page 8]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
+
    POST /ps
    Content-Format: TBD606 (application/core-pubsub+cbor)
 
@@ -442,14 +473,6 @@ Internet-Draft                  CoAP Diag                      July 2026
      2: "core.ps.data"
    }
 
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                 [Page 8]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
-
             Figure 6: POST creating a topic, with CBOR payloads
 
    A FETCH that filters a collection, returning a CoRE Link Format
@@ -472,7 +495,16 @@ Internet-Draft                  CoAP Diag                      July 2026
 
                      Figure 7: FETCH with a CBOR filter
 
-   An iPATCH ([RFC8132]) that applies a partial update:
+   An iPATCH [RFC8132] that applies a partial update:
+
+
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                 [Page 9]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
 
    iPATCH /ps/h9392
    Content-Format: TBD606 (application/core-pubsub+cbor)
@@ -492,19 +524,7 @@ Internet-Draft                  CoAP Diag                      July 2026
 
                  Figure 8: iPATCH applying a partial update
 
-   An Observe ([RFC7641]) subscription and its first notification:
-
-
-
-
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                 [Page 9]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
+   An Observe [RFC7641] subscription and its first notification:
 
    GET /ps/data/1bd0d6d
    Observe: 0
@@ -522,7 +542,7 @@ Internet-Draft                  CoAP Diag                      July 2026
 
                        Figure 9: Observe subscription
 
-   Discovery of a broker through .well-known/core ([RFC6690]):
+   Discovery of a broker through .well-known/core [RFC6690]:
 
    GET /.well-known/core?rt=core.ps
 
@@ -533,31 +553,11 @@ Internet-Draft                  CoAP Diag                      July 2026
 
                  Figure 10: Discovery via .well-known/core
 
-   An ACE ([RFC9200]) token request, whose response carries a binary
-   access token as a hexadecimal payload item:
+   An ACE [RFC9200] token request and response:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                [Page 10]
+Jimenez & Bormann        Expires 5 January 2027                [Page 10]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
@@ -608,18 +608,18 @@ Internet-Draft                  CoAP Diag                      July 2026
    [RFC9112].  The Content-Format annotation, a number followed by a
    media type in parentheses, follows [RFC8132].  CBOR payloads follow
    the commented EDN style used in [RFC9203] and in CORECONF
-   ([I-D.ietf-core-comi]).  Transport annotations use the terms of
+   [I-D.ietf-core-comi].  Transport annotations use the terms of
    [RFC7252].
 
 
 
-Jimenez & Bormann        Expires 3 January 2027                [Page 11]
+Jimenez & Bormann        Expires 5 January 2027                [Page 11]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
 
-   Appendix A presents the source notations in full and compares them
-   along these dimensions.
+   Appendix A presents the source notations in more detail and compares
+   them along these dimensions.
 
 7.  Tool Integration
 
@@ -648,10 +648,10 @@ Internet-Draft                  CoAP Diag                      July 2026
    based formats; and it reports any error with the line number within
    the block.
 
-   A block can reference a CDDL schema so that the payload is checked
-   for structure as well as well-formedness:
+   A block can reference a CDDL data definition so that the payload is
+   checked for structure as well as well-formedness:
 
-   ~~~ coap {::check cddl="pubsub-topic.cddl"}
+   ~~~ coap
    POST /ps
    Content-Format: TBD606 (application/core-pubsub+cbor)
 
@@ -662,21 +662,23 @@ Internet-Draft                  CoAP Diag                      July 2026
      2: "core.ps.data"
    }
    ~~~
-
-   The building blocks for this validation already exist: kramdown-rfc
-   validates JSON sourcecode blocks and has hooks for CBOR diagnostic
-   types; the cbor-diag Ruby gem parses EDN and round-trips it to and
+   {: check-cddl="pubsub-topic.cddl"}
 
 
 
-Jimenez & Bormann        Expires 3 January 2027                [Page 12]
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                [Page 12]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
 
-   from bytes; and the cddl Ruby gem validates CBOR against a CDDL
-   schema.  EDN itself is being formalized in
-   [I-D.ietf-cbor-edn-literals].
+   The building blocks for this validation already exist: kramdown-rfc
+   validates JSON sourcecode blocks and has hooks for CBOR diagnostic
+   types; the edn-abnf Ruby gem parses EDN (ABNF in
+   [I-D.ietf-cbor-edn-literals]) and round-trips it to and from bytes;
+   and the cddl Ruby gem validates CBOR against a CDDL data definition.
 
 8.  Security Considerations
 
@@ -691,9 +693,9 @@ Internet-Draft                  CoAP Diag                      July 2026
 
    Tooling that validates or executes example payloads processes input
    taken from a document under edit.  Such tooling treats the payloads
-   and any referenced CDDL schema as untrusted input: a malformed EDN
-   payload or a hostile schema affects only the document build and does
-   not reach a protocol endpoint.
+   and any referenced CDDL data definition as untrusted input: a
+   malformed EDN payload or a hostile data definition affects only the
+   document build and does not reach a protocol endpoint.
 
 9.  IANA Considerations
 
@@ -706,6 +708,11 @@ Internet-Draft                  CoAP Diag                      July 2026
 
 10.1.  Normative References
 
+   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, DOI 10.17487/RFC3986, January 2005,
+              <https://www.rfc-editor.org/rfc/rfc3986>.
+
    [RFC6690]  Shelby, Z., "Constrained RESTful Environments (CoRE) Link
               Format", RFC 6690, DOI 10.17487/RFC6690, August 2012,
               <https://www.rfc-editor.org/rfc/rfc6690>.
@@ -715,20 +722,23 @@ Internet-Draft                  CoAP Diag                      July 2026
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/rfc/rfc7252>.
 
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                [Page 13]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
+
    [RFC7641]  Hartke, K., "Observing Resources in the Constrained
               Application Protocol (CoAP)", RFC 7641,
               DOI 10.17487/RFC7641, September 2015,
               <https://www.rfc-editor.org/rfc/rfc7641>.
 
-
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                [Page 13]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
+   [RFC7959]  Bormann, C. and Z. Shelby, Ed., "Block-Wise Transfers in
+              the Constrained Application Protocol (CoAP)", RFC 7959,
+              DOI 10.17487/RFC7959, August 2016,
+              <https://www.rfc-editor.org/rfc/rfc7959>.
 
    [RFC8132]  van der Stok, P., Bormann, C., and A. Sehgal, "PATCH and
               FETCH Methods for the Constrained Application Protocol
@@ -768,28 +778,29 @@ Internet-Draft                  CoAP Diag                      July 2026
               2 March 2026, <https://datatracker.ietf.org/doc/html/
               draft-ietf-core-comi-21>.
 
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                [Page 14]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
+
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234,
               DOI 10.17487/RFC5234, January 2008,
               <https://www.rfc-editor.org/rfc/rfc5234>.
 
-   [RFC7959]  Bormann, C. and Z. Shelby, Ed., "Block-Wise Transfers in
-              the Constrained Application Protocol (CoAP)", RFC 7959,
-              DOI 10.17487/RFC7959, August 2016,
-              <https://www.rfc-editor.org/rfc/rfc7959>.
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                [Page 14]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
-
    [RFC7967]  Bhattacharyya, A., Bandyopadhyay, S., Pal, A., and T.
               Bose, "Constrained Application Protocol (CoAP) Option for
               No Server Response", RFC 7967, DOI 10.17487/RFC7967,
               August 2016, <https://www.rfc-editor.org/rfc/rfc7967>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
 
    [RFC8742]  Bormann, C., "Concise Binary Object Representation (CBOR)
               Sequences", RFC 8742, DOI 10.17487/RFC8742, February 2020,
@@ -824,8 +835,15 @@ Appendix A.  Survey of Existing Notation Variants
    notations.  Each is shown with a representative exchange and a one-
    line characterization.
 
+
+
+Jimenez & Bormann        Expires 5 January 2027                [Page 15]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
+
    Variant 1, from [RFC7252], embeds message sequence charts with
-   transport-layer detail:
+   message-layer detail:
 
    Header: GET (T=CON, Code=0.01, MID=0x7d34)
    Token: 0x20
@@ -834,13 +852,6 @@ Appendix A.  Survey of Existing Notation Variants
    Header: 2.05 Content (T=ACK, Code=2.05, MID=0x7d34)
    Token: 0x20
    Payload: "22.3 C"
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                [Page 15]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
 
         Figure 13: Variant 1 (RFC 7252): message sequence chart with
                               transport detail
@@ -876,6 +887,17 @@ Internet-Draft                  CoAP Diag                      July 2026
    Variant 4, from [RFC8132], places the method and URI on the first
    line and lets the payload follow directly, with no explicit marker:
 
+
+
+
+
+
+
+Jimenez & Bormann        Expires 5 January 2027                [Page 16]
+
+Internet-Draft                  CoAP Diag                      July 2026
+
+
    FETCH CoAP://www.example.com/object
    Content-Format: NNN (application/example-map-keys+json)
    Accept: application/json
@@ -888,15 +910,6 @@ Internet-Draft                  CoAP Diag                      July 2026
    { "foo": ["bar","baz"] }
 
        Figure 16: Variant 4 (RFC 8132): method + URI, payload follows
-
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                [Page 16]
-
-Internet-Draft                  CoAP Diag                      July 2026
-
 
    Variant 5, from [RFC9203], prefixes each message with Header: and
    each body with Payload:, and carries CBOR in diagnostic notation:
@@ -916,8 +929,8 @@ Internet-Draft                  CoAP Diag                      July 2026
 
     Figure 17: Variant 5 (RFC 9203): Header/Payload with CBOR diagnostic
 
-   Variant 6, from CORECONF ([I-D.ietf-core-comi]), uses REQ:/RES:
-   labels, an angle-bracketed path, and a parenthetical Content-Format:
+   Variant 6, from CORECONF [I-D.ietf-core-comi], uses REQ:/RES: labels,
+   an angle-bracketed path, and a parenthetical Content-Format:
 
    REQ: FETCH </c>
    (Content-Format: application/yang-identifiers+cbor-seq)
@@ -932,27 +945,18 @@ Internet-Draft                  CoAP Diag                      July 2026
 
       Figure 18: Variant 6 (CORECONF): REQ/RES with angle-bracket path
 
-   Variant 7, from the CoAP publish-subscribe work, follows the Variant
-   5 form with a path-only target and annotates the payload line with a
-   format hint:
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                [Page 17]
+Jimenez & Bormann        Expires 5 January 2027                [Page 17]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
+
+   Variant 7, from the CoAP publish-subscribe work, follows the Variant
+   5 form with a path-only target and annotates the payload line with a
+   format hint:
 
    Header: POST (Code=0.02)
    Uri-Path: "ps"
@@ -1001,11 +1005,7 @@ Internet-Draft                  CoAP Diag                      July 2026
 
 
 
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                [Page 18]
+Jimenez & Bormann        Expires 5 January 2027                [Page 18]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
@@ -1047,24 +1047,27 @@ Internet-Draft                  CoAP Diag                      July 2026
    differently.  Variants 3 and 4 are the closest to HTTP message
    syntax, while Variants 5 and 7 are the most structured and the most
    amenable to mechanical parsing.  Only Variants 1 and 2 include
-   transport-layer information; the remaining variants describe the
+   message-layer information; the remaining variants describe the
    application layer alone.
 
-Appendix B.  Requirements for a Unified Notation
 
-   The survey yields five requirements, which the notation in the body
-   satisfies:
+   // TODO: Look at RFC 8323 and signaling codes (7.xx).
 
-   1.  A first line that identifies the method for a request or the
-       response code for a response, optionally with the URI.
+Appendix B.  Design Elements for a Unified Notation
 
-
+   The survey yields five design elements, which the notation in the
+   body satisfies:
 
 
-Jimenez & Bormann        Expires 3 January 2027                [Page 19]
+
+
+Jimenez & Bormann        Expires 5 January 2027                [Page 19]
 
 Internet-Draft                  CoAP Diag                      July 2026
 
+
+   1.  A first line that identifies the method for a request or the
+       response code for a response, optionally with the URI.
 
    2.  Option lines as Name: value pairs.
 
@@ -1091,6 +1094,10 @@ Authors' Addresses
 
    Carsten Bormann
    Universität Bremen TZI
+   Postfach 330440
+   D-28359 Bremen
+   Germany
+   Phone: +49-421-218-63921
    Email: cabo@tzi.org
 
 
@@ -1110,11 +1117,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-Jimenez & Bormann        Expires 3 January 2027                [Page 20]
+Jimenez & Bormann        Expires 5 January 2027                [Page 20]
