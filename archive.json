@@ -1,0 +1,91 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2026-07-05T00:46:31.297845+00:00",
+  "repo": "jaimejim/coap-diag",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOTLrZsc7tpndH",
+      "title": "Do a quick pre-00 editorial round.",
+      "url": "https://github.com/jaimejim/coap-diag/pull/1",
+      "state": "MERGED",
+      "author": "cabo",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-03T15:47:27Z",
+      "updatedAt": "2026-07-04T15:31:03Z",
+      "baseRepository": "jaimejim/coap-diag",
+      "baseRefName": "main",
+      "baseRefOid": "6ba29c678dcd005ed1ea2841afea7a21af6877fb",
+      "headRepository": "cabo/coap-diag",
+      "headRefName": "editorial-round-1",
+      "headRefOid": "41794916fab32cf69f23fa2d66e875a5ab469246",
+      "closedAt": "2026-07-04T15:30:54Z",
+      "mergedAt": "2026-07-04T15:30:54Z",
+      "mergedBy": "jaimejim",
+      "mergeCommit": {
+        "oid": "278ef10db80c7c633f9cc9b170a9edbaf98e9cd0"
+      },
+      "comments": [
+        {
+          "author": "jaimejim",
+          "authorAssociation": "OWNER",
+          "body": "Merged into `main` via 278ef10 after a clean local build (kramdown-rfc \u2192 xml2rfc, both exit 0). Thanks for the editorial pass \u2014 the transport-layer \u2192 message-layer correction and the EDN definition update are especially good catches.",
+          "createdAt": "2026-07-04T15:31:03Z",
+          "updatedAt": "2026-07-04T15:31:03Z"
+        }
+      ],
+      "reviews": []
+    }
+  ]
+}
