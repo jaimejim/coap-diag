@@ -10,22 +10,22 @@
 <meta content="
        This document defines a text notation for representing Constrained Application Protocol (CoAP) request/response exchanges in Internet-Drafts and RFCs. The notation balances human readability with mechanical validation: a reader can follow an exchange at a glance, and tooling can be built to parse the message structure and check each payload against its declared content format. The notation is application-layer by default, with message-layer detail added only where an example depends on it. It is a recommended convention for use in documents and with authoring tools such as kramdown-rfc, not a conformance target; it does not change CoAP or any on-the-wire encoding. 
     " name="description">
-<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="xml2rfc 3.34.1" name="generator">
 <meta content="draft-jimenez-core-coap-diag-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.34.0
-    Python 3.14.5
-    ConfigArgParse 1.7.5
+  xml2rfc 3.34.1
+    Python 3.14.8
+    ConfigArgParse 1.8.0
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.0
+    platformdirs 4.13.4
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.2
+    wcwidth 0.9.2
 -->
 <link href="draft-jimenez-core-coap-diag.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -61,7 +61,6 @@
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -110,7 +109,6 @@
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -175,7 +173,6 @@
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1044,11 +1041,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">CoAP Diag</td>
-<td class="right">July 2026</td>
+<td class="right">October 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Jimenez &amp; Bormann</td>
-<td class="center">Expires 5 January 2027</td>
+<td class="center">Expires 1 May 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,12 +1058,12 @@ svg {
 <dd class="internet-draft">draft-jimenez-core-coap-diag-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-04" class="published">4 July 2026</time>
+<time datetime="2026-10-28" class="published">28 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-05">5 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-05-01">1 May 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1119,7 +1116,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 May 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1176,13 +1173,16 @@ svg {
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-payload" class="internal xref">Payload</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-transport-annotations" class="internal xref">Transport Annotations</a></p>
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-payload-representations" class="internal xref">Payload Representations</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
-                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-multiple-messages" class="internal xref">Multiple Messages</a></p>
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-transport-annotations" class="internal xref">Transport Annotations</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
-                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-grammar" class="internal xref">Grammar</a></p>
+                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-multiple-messages" class="internal xref">Multiple Messages</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9">
+                <p id="section-toc.1-1.4.2.9.1"><a href="#section-4.9" class="auto internal xref">4.9</a>.  <a href="#name-grammar" class="internal xref">Grammar</a></p>
 </li>
             </ul>
 </li>
@@ -1323,7 +1323,7 @@ Content-Format: 60 (application/cbor)
         <dd class="break"></dd>
 <dt id="section-3-2.9">Transport-agnostic by default:</dt>
         <dd style="margin-left: 1.5em" id="section-3-2.10">
-          <p id="section-3-2.10.1">The notation describes the application layer. CoAP message-layer detail is added only where an example depends on it, using transport annotations (<a href="#transport" class="auto internal xref">Section 4.6</a>).<a href="#section-3-2.10.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.10.1">The notation describes the application layer. CoAP message-layer detail is added only where an example depends on it, using transport annotations (<a href="#transport" class="auto internal xref">Section 4.7</a>).<a href="#section-3-2.10.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
@@ -1430,23 +1430,47 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
           <dd class="break"></dd>
 <dt id="section-4.5-2.7">Binary content beyond CBOR:</dt>
           <dd style="margin-left: 1.5em" id="section-4.5-2.8">
-            <p id="section-4.5-2.8.1">A hexadecimal dump using the <code>h'...'</code> notation of EDN <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>.<a href="#section-4.5-2.8.1" class="pilcrow">¶</a></p>
+            <p id="section-4.5-2.8.1">A hexadecimal dump using the <code>h'...'</code> notation of EDN <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>. Blank space and comments between the hex digits are permitted by <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>, so the dump can be grouped into fields and annotated.<a href="#section-4.5-2.8.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-4.5-3">The diagnostic payload of an error response (<span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.5.2" class="relref">Section 5.5.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>) is written as a text string with no Content-Format annotation, as shown in <a href="#fig-error" class="auto internal xref">Figure 12</a>.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-3">The diagnostic payload of an error response (<span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.5.2" class="relref">Section 5.5.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>) is written as a text string with no Content-Format annotation, as shown in <a href="#fig-error" class="auto internal xref">Figure 14</a>.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
 <p id="section-4.5-4">A payload line that exceeds the available width is folded using the convention of <span>[<a href="#RFC8792" class="cite xref">RFC8792</a>]</span>, so that a tool reconstructs the original payload by removing the folds before parsing.<a href="#section-4.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="transport">
+<div id="representations">
 <section id="section-4.6">
-        <h3 id="name-transport-annotations">
-<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-transport-annotations" class="section-name selfRef">Transport Annotations</a>
+        <h3 id="name-payload-representations">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-payload-representations" class="section-name selfRef">Payload Representations</a>
         </h3>
-<p id="section-4.6-1">Where an example depends on CoAP message-layer behavior, the detail is added in parentheses on the request or response line. Common annotations record the message type (<code>CON</code>, <code>NON</code>, <code>ACK</code>), the token, and the message ID, as defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.6-1">The text notation given in <a href="#payload" class="auto internal xref">Section 4.5</a> is the default representation of a payload, and in the common case it is the only one shown. An example departs from this in two situations. In the first, the octets on the wire are the point of the example, for instance in a document that defines an encoding, and the reader needs them next to the readable form. In the second, the content format has no text notation that a tool can parse but does have a human-readable rendering. DNS over CoAP <span>[<a href="#RFC9953" class="cite xref">RFC9953</a>]</span> meets both: its request examples show a DNS message as a hexadecimal dump and in the presentation style of DNS tooling, and its response examples show the latter alone.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.6-2">A representation other than the default is introduced by a representation marker, a line of the form <code>Payload (form):</code> placed where that representation begins. The default representation, when shown, comes first and carries no marker. Two forms are defined:<a href="#section-4.6-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlNewline" id="section-4.6-3">
+          <dt id="section-4.6-3.1">
+<code>hex</code>:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.6-3.2">
+            <p id="section-4.6-3.2.1">The octets of the payload, written as an EDN byte string in <code>h'...'</code> notation. For a CBOR-based format this is the encoding of the EDN shown as the default representation.<a href="#section-4.6-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.6-3.3">
+<code>text</code>:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.6-3.4">
+            <p id="section-4.6-3.4.1">A human-readable rendering of the payload in a form established for the content format, such as the DNS presentation style in <a href="#fig-doc" class="auto internal xref">Figure 12</a>. A <code>text</code> representation is for the reader; tooling does not parse it.<a href="#section-4.6-3.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+<p id="section-4.6-4">A blank line separates a marked representation from the one before it. <a href="#fig-doc" class="auto internal xref">Figure 12</a> shows a request with the default and the <code>text</code> representation, and a response with the <code>text</code> representation alone.<a href="#section-4.6-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="transport">
+<section id="section-4.7">
+        <h3 id="name-transport-annotations">
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-transport-annotations" class="section-name selfRef">Transport Annotations</a>
+        </h3>
+<p id="section-4.7-1">Where an example depends on CoAP message-layer behavior, the detail is added in parentheses on the request or response line. Common annotations record the message type (<code>CON</code>, <code>NON</code>, <code>ACK</code>), the token, and the message ID, as defined in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-4.7-1" class="pilcrow">¶</a></p>
 <span id="name-exchange-with-transport-ann"></span><div id="fig-transport">
 <figure id="figure-3">
-          <div class="alignLeft art-text artwork" id="section-4.6-2.1">
+          <div class="alignLeft art-text artwork" id="section-4.7-2.1">
 <pre>
 GET /temperature (CON, Token=0x64)
 
@@ -1465,22 +1489,22 @@ Content-Format: 0 (text/plain)
 </section>
 </div>
 <div id="multiple">
-<section id="section-4.7">
+<section id="section-4.8">
         <h3 id="name-multiple-messages">
-<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-multiple-messages" class="section-name selfRef">Multiple Messages</a>
+<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-multiple-messages" class="section-name selfRef">Multiple Messages</a>
         </h3>
-<p id="section-4.7-1">An exchange of more than two messages is written as a sequence of requests and responses, each separated from the next by a blank line. A short label can precede a message where it clarifies the flow.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
+<p id="section-4.8-1">An exchange of more than two messages is written as a sequence of requests and responses, each separated from the next by a blank line. A short label can precede a message where it clarifies the flow.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="grammar">
-<section id="section-4.8">
+<section id="section-4.9">
         <h3 id="name-grammar">
-<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-grammar" class="section-name selfRef">Grammar</a>
+<a href="#section-4.9" class="section-number selfRef">4.9. </a><a href="#name-grammar" class="section-name selfRef">Grammar</a>
         </h3>
-<p id="section-4.8-1"><a href="#fig-grammar" class="auto internal xref">Figure 4</a> sketches the structure in ABNF <span>[<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>. The grammar is descriptive: it fixes the lexical shape a tool relies on, not every detail of the method names, option names, or payload syntax, which are drawn from the documents cited in <a href="#relationship" class="auto internal xref">Section 6</a>.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
+<p id="section-4.9-1"><a href="#fig-grammar" class="auto internal xref">Figure 4</a> sketches the structure in ABNF <span>[<a href="#RFC5234" class="cite xref">RFC5234</a>]</span>. The grammar is descriptive: it fixes the lexical shape a tool relies on, not every detail of the method names, option names, or payload syntax, which are drawn from the documents cited in <a href="#relationship" class="auto internal xref">Section 6</a>.<a href="#section-4.9-1" class="pilcrow">¶</a></p>
 <span id="name-descriptive-grammar-of-the-"></span><div id="fig-grammar">
 <figure id="figure-4">
-          <div class="lang-abnf sourcecode" id="section-4.8-2.1">
+          <div class="lang-abnf sourcecode" id="section-4.9-2.1">
 <pre>
 message = start-line *option-line [blank-line payload]
 start-line = (method SP request-target / code SP reason)
@@ -1488,6 +1512,12 @@ start-line = (method SP request-target / code SP reason)
 option-line = option-name ":" SP option-value newline
 blank-line = newline
 annot = "(" *annot-text ")"    ; free-form transport detail
+
+payload = default-repr *(blank-line marked-repr)
+        / marked-repr *(blank-line marked-repr)
+marked-repr = repr-marker repr
+repr-marker = "Payload (" form "):" newline
+form = "hex" / "text"
 
 method = 1*ALPHA                 ; e.g. GET, POST, iPATCH
 request-target = path ["?" query] / absolute-URI
@@ -1498,7 +1528,7 @@ code = DIGIT "." 2DIGIT        ; e.g. 2.05
 <a href="#name-descriptive-grammar-of-the-" class="selfRef">Descriptive grammar of the notation</a>
           </figcaption></figure>
 </div>
-<p id="section-4.8-3">An option line uses a single space after the colon. The blank line before a payload is present whenever a payload is present and omitted otherwise. A line that is not an option line and precedes a start line is a label. Transport annotations (<a href="#transport" class="auto internal xref">Section 4.6</a>) are free-form and are not required to be machine-parsed.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
+<p id="section-4.9-3">An option line uses a single space after the colon. The blank line before a payload is present whenever a payload is present and omitted otherwise. A payload extends to the blank line that precedes the next start line or label, so a payload may itself contain blank lines, as the DNS presentation style in <a href="#fig-doc" class="auto internal xref">Figure 12</a> does. A line that is not an option line and precedes a start line is a label. The representation forms <code>default-repr</code> and <code>repr</code> (<a href="#representations" class="auto internal xref">Section 4.6</a>) are written in the notation of the content format and are not constrained by this grammar. Transport annotations (<a href="#transport" class="auto internal xref">Section 4.7</a>) are free-form and are not required to be machine-parsed.<a href="#section-4.9-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1508,7 +1538,7 @@ code = DIGIT "." 2DIGIT        ; e.g. 2.05
       <h2 id="name-examples">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
       </h2>
-<p id="section-5-1">The examples in this section use a single sensor, <code>living-room-sensor</code>, throughout.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">The examples in this section use a single sensor, <code>living-room-sensor</code>, throughout; the two DNS examples resolve a single name, <code>example.org</code>.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">A GET on a resource that returns a plain-text representation:<a href="#section-5-2" class="pilcrow">¶</a></p>
 <span id="name-get-with-a-text-payload"></span><div id="fig-get">
 <figure id="figure-5">
@@ -1683,10 +1713,70 @@ Content-Format: 19 (application/ace+cbor)
 <a href="#name-ace-token-request-and-respo" class="selfRef">ACE token request and response</a>
         </figcaption></figure>
 </div>
-<p id="section-5-16">An error response carries a diagnostic payload as a text string, without a Content-Format annotation, as described in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.5.2" class="relref">Section 5.5.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-5-16" class="pilcrow">¶</a></p>
-<span id="name-error-response-with-a-diagn"></span><div id="fig-error">
+<p id="section-5-16">A DNS query over CoAP <span>[<a href="#RFC9953" class="cite xref">RFC9953</a>]</span> for the AAAA record of <code>example.org</code>. The <code>application/dns-message</code> payload is binary, so its default representation is a hexadecimal dump. The request adds the <code>text</code> representation (<a href="#representations" class="auto internal xref">Section 4.6</a>) and the response shows only that representation, as the examples in <span>[<a href="#RFC9953" class="cite xref">RFC9953</a>]</span> do:<a href="#section-5-16" class="pilcrow">¶</a></p>
+<span id="name-dns-over-coap-query-with-tw"></span><div id="fig-doc">
 <figure id="figure-12">
         <div class="lang-coap sourcecode" id="section-5-17.1">
+<pre>
+FETCH coaps://[2001:db8::1]/
+Content-Format: 553 (application/dns-message)
+Accept: 553 (application/dns-message)
+
+h'0000 0100 0001 0000 0000 0000    / header: ID 0, RD, QDCOUNT 1 /
+  07 6578616d706c65 03 6f7267 00   / example.org. /
+  001c 0001'                       / AAAA, IN /
+
+Payload (text):
+;; -&gt;&gt;Header&lt;&lt;- opcode: QUERY, status: NOERROR, id: 0
+;; flags: rd; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;example.org.             IN      AAAA
+
+2.05 Content
+Content-Format: 553 (application/dns-message)
+Max-Age: 58719
+
+Payload (text):
+;; -&gt;&gt;Header&lt;&lt;- opcode: QUERY, status: NOERROR, id: 0
+;; flags: qr rd ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;example.org.                 IN      AAAA
+;; ANSWER SECTION:
+;example.org.         79689   IN      AAAA    2001:db8:1:0:1:2:3:4
+</pre>
+</div>
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<a href="#name-dns-over-coap-query-with-tw" class="selfRef">DNS over CoAP query with two payload representations</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-18">The same query in the <code>application/dns+cbor</code> format of <span>[<a href="#I-D.lenders-dns-cbor" class="cite xref">I-D.lenders-dns-cbor</a>]</span>. The payload is CBOR and is therefore written in EDN, with no second representation needed. Constants such as the record type are written with the <code>e''</code> application extension of <span>[<a href="#I-D.ietf-cbor-edn-e-ref" class="cite xref">I-D.ietf-cbor-edn-e-ref</a>]</span>, as <span>[<a href="#I-D.lenders-dns-cbor" class="cite xref">I-D.lenders-dns-cbor</a>]</span> does; in the response the name, type, and class are elided because they follow from the question:<a href="#section-5-18" class="pilcrow">¶</a></p>
+<span id="name-the-same-query-in-applicati"></span><div id="fig-dns-cbor">
+<figure id="figure-13">
+        <div class="lang-coap sourcecode" id="section-5-19.1">
+<pre>
+FETCH coaps://[2001:db8::1]/
+Content-Format: TBD53 (application/dns+cbor)
+Accept: TBD53 (application/dns+cbor)
+
+[["example", "org", e'RR-AAAA']]
+
+2.05 Content
+Content-Format: TBD53 (application/dns+cbor)
+Max-Age: 58719
+
+[[79689, ip'2001:db8:1:0:1:2:3:4']]
+</pre>
+</div>
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<a href="#name-the-same-query-in-applicati" class="selfRef">The same query in application/dns+cbor</a>
+        </figcaption></figure>
+</div>
+<p id="section-5-20">An error response carries a diagnostic payload as a text string, without a Content-Format annotation, as described in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-5.5.2" class="relref">Section 5.5.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-5-20" class="pilcrow">¶</a></p>
+<span id="name-error-response-with-a-diagn"></span><div id="fig-error">
+<figure id="figure-14">
+        <div class="lang-coap sourcecode" id="section-5-21.1">
 <pre>
 GET /ps/data/unknown
 
@@ -1695,7 +1785,7 @@ GET /ps/data/unknown
 Unknown topic
 </pre>
 </div>
-<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
 <a href="#name-error-response-with-a-diagn" class="selfRef">Error response with a diagnostic payload</a>
         </figcaption></figure>
 </div>
@@ -1732,8 +1822,9 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 </pre><a href="#section-7-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7-3">A tool processes such a block in four steps: it parses the structure into the first line, the option lines, and the payload; it reads the content-format number from the Content-Format annotation; it dispatches the payload to a validator for that format, such as a CBOR diagnostic parser for CBOR-based formats or a JSON parser for JSON-based formats; and it reports any error with the line number within the block.<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4">A block can reference a CDDL data definition so that the payload is checked for structure as well as well-formedness:<a href="#section-7-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-7-5">
+<p id="section-7-4">Representation markers (<a href="#representations" class="auto internal xref">Section 4.6</a>) steer the same dispatch. The default representation is validated as above. A <code>hex</code> representation is parsed as an EDN byte string; where the tool has a decoder for the content format, it decodes the octets, and where the block also shows the default representation of a CBOR-based format, it checks that the EDN encodes to the same octets. A <code>text</code> representation is skipped. EDN application extensions in a payload, such as the <code>e''</code> constants of <a href="#fig-dns-cbor" class="auto internal xref">Figure 13</a>, require their definitions to be available to the tool in the same way a CDDL data definition is.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-5">A block can reference a CDDL data definition so that the payload is checked for structure as well as well-formedness:<a href="#section-7-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7-6">
 <pre>
 ~~~ coap
 POST /ps
@@ -1747,9 +1838,9 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 }
 ~~~
 {: check-cddl="pubsub-topic.cddl"}
-</pre><a href="#section-7-5" class="pilcrow">¶</a>
+</pre><a href="#section-7-6" class="pilcrow">¶</a>
 </div>
-<p id="section-7-6">The building blocks for this validation already exist: kramdown-rfc validates JSON sourcecode blocks and has hooks for CBOR diagnostic types; the <code>edn-abnf</code> Ruby gem parses EDN (ABNF in <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>) and round-trips it to and from bytes; and the <code>cddl</code> Ruby gem validates CBOR against a CDDL data definition.<a href="#section-7-6" class="pilcrow">¶</a></p>
+<p id="section-7-7">The building blocks for this validation already exist: kramdown-rfc validates JSON sourcecode blocks and has hooks for CBOR diagnostic types; the <code>edn-abnf</code> Ruby gem parses EDN (ABNF in <span>[<a href="#I-D.ietf-cbor-edn-literals" class="cite xref">I-D.ietf-cbor-edn-literals</a>]</span>) and round-trips it to and from bytes; and the <code>cddl</code> Ruby gem validates CBOR against a CDDL data definition.<a href="#section-7-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="seccons">
@@ -1822,9 +1913,13 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.ietf-cbor-edn-e-ref">[I-D.ietf-cbor-edn-e-ref]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"External References to Values in CBOR Diagnostic Notation (EDN)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cbor-edn-e-ref-03</span>, <time datetime="2026-03-01" class="refDate">1 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-e-ref-03">https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-e-ref-03</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-cbor-edn-literals">[I-D.ietf-cbor-edn-literals]</dt>
         <dd>
-<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"Concise Diagnostic Notation (CDN)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cbor-edn-literals-26</span>, <time datetime="2026-06-15" class="refDate">15 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-26">https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-26</a>&gt;</span>. </dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"Concise Diagnostic Notation (CDN)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cbor-edn-literals-28</span>, <time datetime="2026-09-29" class="refDate">29 September 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-28">https://datatracker.ietf.org/doc/html/draft-ietf-cbor-edn-literals-28</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-coap-pubsub">[I-D.ietf-core-coap-pubsub]</dt>
         <dd>
@@ -1833,6 +1928,10 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 <dt id="I-D.ietf-core-comi">[I-D.ietf-core-comi]</dt>
         <dd>
 <span class="refAuthor">Veillette, M.</span>, <span class="refAuthor">Van der Stok, P.</span>, <span class="refAuthor">Pelov, A.</span>, <span class="refAuthor">Bierman, A.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"CoAP Management Interface (CORECONF)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-comi-21</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-comi-21">https://datatracker.ietf.org/doc/html/draft-ietf-core-comi-21</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.lenders-dns-cbor">[I-D.lenders-dns-cbor]</dt>
+        <dd>
+<span class="refAuthor">Lenders, M. S.</span>, <span class="refAuthor">Bormann, C.</span>, <span class="refAuthor">Gütschow, M.</span>, <span class="refAuthor">Schmidt, T. C.</span>, and <span class="refAuthor">M. Wählisch</span>, <span class="refTitle">"A Concise Binary Object Representation (CBOR) of DNS Messages"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lenders-dns-cbor-18</span>, <time datetime="2026-07-27" class="refDate">27 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-18">https://datatracker.ietf.org/doc/html/draft-lenders-dns-cbor-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5234">[RFC5234]</dt>
         <dd>
@@ -1863,8 +1962,12 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Wahlstroem, E.</span>, <span class="refAuthor">Erdtman, S.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Authentication and Authorization for Constrained Environments Using the OAuth 2.0 Framework (ACE-OAuth)"</span>, <span class="seriesInfo">RFC 9200</span>, <span class="seriesInfo">DOI 10.17487/RFC9200</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9200">https://www.rfc-editor.org/rfc/rfc9200</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9203">[RFC9203]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Seitz, L.</span>, <span class="refAuthor">Selander, G.</span>, and <span class="refAuthor">M. Gunnarsson</span>, <span class="refTitle">"The Object Security for Constrained RESTful Environments (OSCORE) Profile of the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="seriesInfo">RFC 9203</span>, <span class="seriesInfo">DOI 10.17487/RFC9203</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9203">https://www.rfc-editor.org/rfc/rfc9203</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9953">[RFC9953]</dt>
+      <dd>
+<span class="refAuthor">Lenders, M. S.</span>, <span class="refAuthor">Amsüss, C.</span>, <span class="refAuthor">Gündoğan, C.</span>, <span class="refAuthor">Schmidt, T. C.</span>, and <span class="refAuthor">M. Wählisch</span>, <span class="refTitle">"DNS over CoAP (DoC)"</span>, <span class="seriesInfo">RFC 9953</span>, <span class="seriesInfo">DOI 10.17487/RFC9953</span>, <time datetime="2026-03" class="refDate">March 2026</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9953">https://www.rfc-editor.org/rfc/rfc9953</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1879,7 +1982,7 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 <p id="appendix-A-1">The notation in this document distills the conventions found in published RFCs and active drafts. This appendix records those source notations. Each is shown with a representative exchange and a one-line characterization.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-A-2">Variant 1, from <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, embeds message sequence charts with message-layer detail:<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <span id="name-variant-1-rfc-7252-message-"></span><div id="fig-v1">
-<figure id="figure-13">
+<figure id="figure-15">
         <div class="alignLeft art-text artwork" id="appendix-A-3.1">
 <pre>
 Header: GET (T=CON, Code=0.01, MID=0x7d34)
@@ -1891,13 +1994,13 @@ Token: 0x20
 Payload: "22.3 C"
 </pre>
 </div>
-<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
 <a href="#name-variant-1-rfc-7252-message-" class="selfRef">Variant 1 (RFC 7252): message sequence chart with transport detail</a>
         </figcaption></figure>
 </div>
 <p id="appendix-A-4">Variant 2, from <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>, shows the CoAP header as raw hexadecimal within numbered sequence diagrams:<a href="#appendix-A-4" class="pilcrow">¶</a></p>
 <span id="name-variant-2-rfc-7641-compact-"></span><div id="fig-v2">
-<figure id="figure-14">
+<figure id="figure-16">
         <div class="alignLeft art-text artwork" id="appendix-A-5.1">
 <pre>
 Header: GET 0x41011633
@@ -1912,13 +2015,13 @@ Max-Age: 15
 Payload: "18.5 Cel"
 </pre>
 </div>
-<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
+<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
 <a href="#name-variant-2-rfc-7641-compact-" class="selfRef">Variant 2 (RFC 7641): compact hex header</a>
         </figcaption></figure>
 </div>
 <p id="appendix-A-6">Variant 3, from <span>[<a href="#RFC9176" class="cite xref">RFC9176</a>]</span>, uses <code>Req:</code>/<code>Res:</code> labels with the full URI on the first line:<a href="#appendix-A-6" class="pilcrow">¶</a></p>
 <span id="name-variant-3-rfc-9176-req-res-"></span><div id="fig-v3">
-<figure id="figure-15">
+<figure id="figure-17">
         <div class="alignLeft art-text artwork" id="appendix-A-7.1">
 <pre>
 Req: POST coap://rd.example.com/rd?ep=node1
@@ -1929,13 +2032,13 @@ Res: 2.01 Created
 Location-Path: /rd/4521
 </pre>
 </div>
-<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
+<figcaption><a href="#figure-17" class="selfRef">Figure 17</a>:
 <a href="#name-variant-3-rfc-9176-req-res-" class="selfRef">Variant 3 (RFC 9176): Req/Res shorthand</a>
         </figcaption></figure>
 </div>
 <p id="appendix-A-8">Variant 4, from <span>[<a href="#RFC8132" class="cite xref">RFC8132</a>]</span>, places the method and URI on the first line and lets the payload follow directly, with no explicit marker:<a href="#appendix-A-8" class="pilcrow">¶</a></p>
 <span id="name-variant-4-rfc-8132-method-u"></span><div id="fig-v4">
-<figure id="figure-16">
+<figure id="figure-18">
         <div class="alignLeft art-text artwork" id="appendix-A-9.1">
 <pre>
 FETCH CoAP://www.example.com/object
@@ -1950,13 +2053,13 @@ Content-Format: 50 (application/json)
 { "foo": ["bar","baz"] }
 </pre>
 </div>
-<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
+<figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
 <a href="#name-variant-4-rfc-8132-method-u" class="selfRef">Variant 4 (RFC 8132): method + URI, payload follows</a>
         </figcaption></figure>
 </div>
 <p id="appendix-A-10">Variant 5, from <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>, prefixes each message with <code>Header:</code> and each body with <code>Payload:</code>, and carries CBOR in diagnostic notation:<a href="#appendix-A-10" class="pilcrow">¶</a></p>
 <span id="name-variant-5-rfc-9203-header-p"></span><div id="fig-v5">
-<figure id="figure-17">
+<figure id="figure-19">
         <div class="alignLeft art-text artwork" id="appendix-A-11.1">
 <pre>
 Header: POST (Code=0.02)
@@ -1973,13 +2076,13 @@ Payload:
 }
 </pre>
 </div>
-<figcaption><a href="#figure-17" class="selfRef">Figure 17</a>:
+<figcaption><a href="#figure-19" class="selfRef">Figure 19</a>:
 <a href="#name-variant-5-rfc-9203-header-p" class="selfRef">Variant 5 (RFC 9203): Header/Payload with CBOR diagnostic</a>
         </figcaption></figure>
 </div>
 <p id="appendix-A-12">Variant 6, from CORECONF <span>[<a href="#I-D.ietf-core-comi" class="cite xref">I-D.ietf-core-comi</a>]</span>, uses <code>REQ:</code>/<code>RES:</code> labels, an angle-bracketed path, and a parenthetical Content-Format:<a href="#appendix-A-12" class="pilcrow">¶</a></p>
 <span id="name-variant-6-coreconf-req-res-"></span><div id="fig-v6">
-<figure id="figure-18">
+<figure id="figure-20">
         <div class="alignLeft art-text artwork" id="appendix-A-13.1">
 <pre>
 REQ: FETCH &lt;/c&gt;
@@ -1994,13 +2097,13 @@ RES: 2.05 Content
 { 1723 : "2014-10-26T12:16:31Z" }
 </pre>
 </div>
-<figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
+<figcaption><a href="#figure-20" class="selfRef">Figure 20</a>:
 <a href="#name-variant-6-coreconf-req-res-" class="selfRef">Variant 6 (CORECONF): REQ/RES with angle-bracket path</a>
         </figcaption></figure>
 </div>
 <p id="appendix-A-14">Variant 7, from the CoAP publish-subscribe work, follows the Variant 5 form with a path-only target and annotates the payload line with a format hint:<a href="#appendix-A-14" class="pilcrow">¶</a></p>
 <span id="name-variant-7-coap-pub-sub-9203"></span><div id="fig-v7">
-<figure id="figure-19">
+<figure id="figure-21">
         <div class="alignLeft art-text artwork" id="appendix-A-15.1">
 <pre>
 Header: POST (Code=0.02)
@@ -2031,11 +2134,47 @@ Payload (in CBOR diagnostic notation):
 }
 </pre>
 </div>
-<figcaption><a href="#figure-19" class="selfRef">Figure 19</a>:
+<figcaption><a href="#figure-21" class="selfRef">Figure 21</a>:
 <a href="#name-variant-7-coap-pub-sub-9203" class="selfRef">Variant 7 (CoAP pub-sub): 9203-style with path-only URI</a>
         </figcaption></figure>
 </div>
-<p id="appendix-A-16"><a href="#tab-variants" class="auto internal xref">Table 1</a> compares the variants.<a href="#appendix-A-16" class="pilcrow">¶</a></p>
+<p id="appendix-A-16">Variant 8, from DNS over CoAP <span>[<a href="#RFC9953" class="cite xref">RFC9953</a>]</span>, follows the Variant 4 form and labels each representation of the payload, showing a binary payload as a hexadecimal dump and in a human-readable form, with the latter alone in responses. An empty payload is marked <code>[no payload]</code>:<a href="#appendix-A-16" class="pilcrow">¶</a></p>
+<span id="name-variant-8-rfc-9953-labeled-"></span><div id="fig-v8">
+<figure id="figure-22">
+        <div class="alignLeft art-text artwork" id="appendix-A-17.1">
+<pre>
+FETCH coaps://[2001:db8::1]/
+Content-Format: 553 (application/dns-message)
+Accept: 553 (application/dns-message)
+Payload (binary):
+ 00 00 01 00 00 01 00 00 00 00 00 00 07 65 78 61
+ 6d 70 6c 65 03 6f 72 67 00 00 1c 00 01
+
+Payload (human-readable):
+ ;; -&gt;&gt;Header&lt;&lt;- opcode: QUERY, status: NOERROR, id: 0
+ ;; flags: rd; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0
+
+ ;; QUESTION SECTION:
+ ;example.org.             IN      AAAA
+
+2.05 Content
+Content-Format: 553 (application/dns-message)
+Max-Age: 58719
+Payload (human-readable):
+ ;; -&gt;&gt;Header&lt;&lt;- opcode: QUERY, status: NOERROR, id: 0
+ ;; flags: qr rd ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+ ;; QUESTION SECTION:
+ ;example.org.                 IN      AAAA
+ ;; ANSWER SECTION:
+ ;example.org.         79689   IN      AAAA    2001:db8:1:0:1:2:3:4
+</pre>
+</div>
+<figcaption><a href="#figure-22" class="selfRef">Figure 22</a>:
+<a href="#name-variant-8-rfc-9953-labeled-" class="selfRef">Variant 8 (RFC 9953): labeled payload representations</a>
+        </figcaption></figure>
+</div>
+<p id="appendix-A-18"><a href="#tab-variants" class="auto internal xref">Table 1</a> compares the variants.<a href="#appendix-A-18" class="pilcrow">¶</a></p>
 <span id="name-comparison-of-existing-coap"></span><div id="tab-variants">
 <table class="center" id="table-1">
         <caption>
@@ -2132,11 +2271,22 @@ Payload (in CBOR diagnostic notation):
             <td class="text-left" rowspan="1" colspan="1">CBOR diagnostic</td>
             <td class="text-left" rowspan="1" colspan="1">No</td>
           </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">8 (9953)</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>FETCH coaps://host/path</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">Full URI</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>Payload (...):</code> per representation</td>
+            <td class="text-left" rowspan="1" colspan="1">Hex and human-readable</td>
+            <td class="text-left" rowspan="1" colspan="1">No</td>
+          </tr>
         </tbody>
       </table>
 </div>
-<p id="appendix-A-18">Three observations follow from the survey. Variants 5, 6, and 7 all carry CBOR diagnostic payloads but frame the surrounding message differently. Variants 3 and 4 are the closest to HTTP message syntax, while Variants 5 and 7 are the most structured and the most amenable to mechanical parsing. Only Variants 1 and 2 include message-layer information; the remaining variants describe the application layer alone.<a href="#appendix-A-18" class="pilcrow">¶</a></p>
-<p id="appendix-A-19"><span class="cref" id="todo1">TODO: Look at RFC 8323 and signaling codes (7.xx).</span><a href="#appendix-A-19" class="pilcrow">¶</a></p>
+<p id="appendix-A-20">Four observations follow from the survey. Variants 5, 6, and 7 all carry CBOR diagnostic payloads but frame the surrounding message differently. Variants 3, 4, and 8 are the closest to HTTP message syntax, while Variants 5 and 7 are the most structured and the most amenable to mechanical parsing. Only Variants 1 and 2 include message-layer information; the remaining variants describe the application layer alone. Variant 8 is the only one to show a payload in more than one representation; <a href="#representations" class="auto internal xref">Section 4.6</a> adopts that device, with the marker reserved for a representation other than the default.<a href="#appendix-A-20" class="pilcrow">¶</a></p>
+<p id="appendix-A-21"><span class="cref" id="todo1">TODO: Look at RFC 8323 and signaling codes (7.xx).</span><a href="#appendix-A-21" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="requirements">
@@ -2159,7 +2309,7 @@ Payload (in CBOR diagnostic notation):
           <p id="appendix-B-2.4.1">A declared payload format, as a Content-Format value or annotation, so that a tool can validate the payload.<a href="#appendix-B-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li id="appendix-B-2.5">
-          <p id="appendix-B-2.5.1">A payload in the text notation appropriate to that format: CBOR EDN, JSON, link-format, or a hexadecimal dump.<a href="#appendix-B-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-2.5.1">A payload in the text notation appropriate to that format: CBOR EDN, JSON, link-format, or a hexadecimal dump, with a further representation marked where the octets matter or the format has a human-readable rendering.<a href="#appendix-B-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 </section>
