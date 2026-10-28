@@ -38,6 +38,9 @@ normative:
 
 informative:
   RFC9112: http11
+  RFC9953: doc
+  I-D.lenders-dns-cbor: dnscbor
+  I-D.ietf-cbor-edn-e-ref: eref
   RFC9203:
   RFC9200:
   RFC8742:
@@ -180,11 +183,26 @@ Link-format:
 : CoRE Link Format {{RFC6690}}.
 
 Binary content beyond CBOR:
-: A hexadecimal dump using the `h'...'` notation of EDN {{RFC8949}}.
+: A hexadecimal dump using the `h'...'` notation of EDN {{RFC8949}}. Blank space and comments between the hex digits are permitted by {{I-D.ietf-cbor-edn-literals}}, so the dump can be grouped into fields and annotated.
 
 The diagnostic payload of an error response ({{Section 5.5.2 of RFC7252}}) is written as a text string with no Content-Format annotation, as shown in {{fig-error}}.
 
 A payload line that exceeds the available width is folded using the convention of {{?RFC8792}}, so that a tool reconstructs the original payload by removing the folds before parsing.
+
+## Payload Representations {#representations}
+
+The text notation given in {{payload}} is the default representation of a payload, and in the common case it is the only one shown. An example departs from this in two situations. In the first, the octets on the wire are the point of the example, for instance in a document that defines an encoding, and the reader needs them next to the readable form. In the second, the content format has no text notation that a tool can parse but does have a human-readable rendering. DNS over CoAP {{-doc}} meets both: its request examples show a DNS message as a hexadecimal dump and in the presentation style of DNS tooling, and its response examples show the latter alone.
+
+A representation other than the default is introduced by a representation marker, a line of the form `Payload (form):` placed where that representation begins. The default representation, when shown, comes first and carries no marker. Two forms are defined:
+
+{:vspace}
+`hex`:
+: The octets of the payload, written as an EDN byte string in `h'...'` notation. For a CBOR-based format this is the encoding of the EDN shown as the default representation.
+
+`text`:
+: A human-readable rendering of the payload in a form established for the content format, such as the DNS presentation style in {{fig-doc}}. A `text` representation is for the reader; tooling does not parse it.
+
+A blank line separates a marked representation from the one before it. {{fig-doc}} shows a request with the default and the `text` representation, and a response with the `text` representation alone.
 
 ## Transport Annotations {#transport}
 
@@ -218,17 +236,23 @@ option-line = option-name ":" SP option-value newline
 blank-line = newline
 annot = "(" *annot-text ")"    ; free-form transport detail
 
+payload = default-repr *(blank-line marked-repr)
+        / marked-repr *(blank-line marked-repr)
+marked-repr = repr-marker repr
+repr-marker = "Payload (" form "):" newline
+form = "hex" / "text"
+
 method = 1*ALPHA                 ; e.g. GET, POST, iPATCH
 request-target = path ["?" query] / absolute-URI
 code = DIGIT "." 2DIGIT        ; e.g. 2.05
 ~~~~
 {: #fig-grammar title="Descriptive grammar of the notation"}
 
-An option line uses a single space after the colon. The blank line before a payload is present whenever a payload is present and omitted otherwise. A line that is not an option line and precedes a start line is a label. Transport annotations ({{transport}}) are free-form and are not required to be machine-parsed.
+An option line uses a single space after the colon. The blank line before a payload is present whenever a payload is present and omitted otherwise. A payload extends to the blank line that precedes the next start line or label, so a payload may itself contain blank lines, as the DNS presentation style in {{fig-doc}} does. A line that is not an option line and precedes a start line is a label. The representation forms `default-repr` and `repr` ({{representations}}) are written in the notation of the content format and are not constrained by this grammar. Transport annotations ({{transport}}) are free-form and are not required to be machine-parsed.
 
 # Examples {#examples}
 
-The examples in this section use a single sensor, `living-room-sensor`, throughout.
+The examples in this section use a single sensor, `living-room-sensor`, throughout; the two DNS examples resolve a single name, `example.org`.
 
 A GET on a resource that returns a plain-text representation:
 
@@ -370,6 +394,56 @@ Content-Format: 19 (application/ace+cbor)
 ~~~~
 {: #fig-ace title="ACE token request and response"}
 
+A DNS query over CoAP {{-doc}} for the AAAA record of `example.org`. The `application/dns-message` payload is binary, so its default representation is a hexadecimal dump. The request adds the `text` representation ({{representations}}) and the response shows only that representation, as the examples in {{-doc}} do:
+
+~~~~ coap
+FETCH coaps://[2001:db8::1]/
+Content-Format: 553 (application/dns-message)
+Accept: 553 (application/dns-message)
+
+h'0000 0100 0001 0000 0000 0000    / header: ID 0, RD, QDCOUNT 1 /
+  07 6578616d706c65 03 6f7267 00   / example.org. /
+  001c 0001'                       / AAAA, IN /
+
+Payload (text):
+;; ->>Header<<- opcode: QUERY, status: NOERROR, id: 0
+;; flags: rd; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;example.org.             IN      AAAA
+
+2.05 Content
+Content-Format: 553 (application/dns-message)
+Max-Age: 58719
+
+Payload (text):
+;; ->>Header<<- opcode: QUERY, status: NOERROR, id: 0
+;; flags: qr rd ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;example.org.                 IN      AAAA
+;; ANSWER SECTION:
+;example.org.         79689   IN      AAAA    2001:db8:1:0:1:2:3:4
+~~~~
+{: #fig-doc title="DNS over CoAP query with two payload representations"}
+
+The same query in the `application/dns+cbor` format of {{-dnscbor}}. The payload is CBOR and is therefore written in EDN, with no second representation needed. Constants such as the record type are written with the `e''` application extension of {{-eref}}, as {{-dnscbor}} does; in the response the name, type, and class are elided because they follow from the question:
+
+~~~~ coap
+FETCH coaps://[2001:db8::1]/
+Content-Format: TBD53 (application/dns+cbor)
+Accept: TBD53 (application/dns+cbor)
+
+[["example", "org", e'RR-AAAA']]
+
+2.05 Content
+Content-Format: TBD53 (application/dns+cbor)
+Max-Age: 58719
+
+[[79689, ip'2001:db8:1:0:1:2:3:4']]
+~~~~
+{: #fig-dns-cbor title="The same query in application/dns+cbor"}
+
 An error response carries a diagnostic payload as a text string, without a Content-Format annotation, as described in {{Section 5.5.2 of RFC7252}}:
 
 ~~~~ coap
@@ -406,6 +480,8 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 ~~~~
 
 A tool processes such a block in four steps: it parses the structure into the first line, the option lines, and the payload; it reads the content-format number from the Content-Format annotation; it dispatches the payload to a validator for that format, such as a CBOR diagnostic parser for CBOR-based formats or a JSON parser for JSON-based formats; and it reports any error with the line number within the block.
+
+Representation markers ({{representations}}) steer the same dispatch. The default representation is validated as above. A `hex` representation is parsed as an EDN byte string; where the tool has a decoder for the content format, it decodes the octets, and where the block also shows the default representation of a CBOR-based format, it checks that the EDN encodes to the same octets. A `text` representation is skipped. EDN application extensions in a payload, such as the `e''` constants of {{fig-dns-cbor}}, require their definitions to be available to the tool in the same way a CDDL data definition is.
 
 A block can reference a CDDL data definition so that the payload is checked for structure as well as well-formedness:
 
@@ -567,6 +643,37 @@ Payload (in CBOR diagnostic notation):
 ~~~~
 {: #fig-v7 title="Variant 7 (CoAP pub-sub): 9203-style with path-only URI"}
 
+Variant 8, from DNS over CoAP {{RFC9953}}, follows the Variant 4 form and labels each representation of the payload, showing a binary payload as a hexadecimal dump and in a human-readable form, with the latter alone in responses. An empty payload is marked `[no payload]`:
+
+~~~~
+FETCH coaps://[2001:db8::1]/
+Content-Format: 553 (application/dns-message)
+Accept: 553 (application/dns-message)
+Payload (binary):
+ 00 00 01 00 00 01 00 00 00 00 00 00 07 65 78 61
+ 6d 70 6c 65 03 6f 72 67 00 00 1c 00 01
+
+Payload (human-readable):
+ ;; ->>Header<<- opcode: QUERY, status: NOERROR, id: 0
+ ;; flags: rd; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0
+
+ ;; QUESTION SECTION:
+ ;example.org.             IN      AAAA
+
+2.05 Content
+Content-Format: 553 (application/dns-message)
+Max-Age: 58719
+Payload (human-readable):
+ ;; ->>Header<<- opcode: QUERY, status: NOERROR, id: 0
+ ;; flags: qr rd ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+ ;; QUESTION SECTION:
+ ;example.org.                 IN      AAAA
+ ;; ANSWER SECTION:
+ ;example.org.         79689   IN      AAAA    2001:db8:1:0:1:2:3:4
+~~~~
+{: #fig-v8 title="Variant 8 (RFC 9953): labeled payload representations"}
+
 {{tab-variants}} compares the variants.
 
 | Variant | First line | URI style | Payload marker | Payload format | Transport detail |
@@ -578,9 +685,10 @@ Payload (in CBOR diagnostic notation):
 | 5 (9203) | `Header: POST (Code=0.02)` | Split options | `Payload:` | CBOR diagnostic | No |
 | 6 (COMI) | `REQ: FETCH </path>` | Path in `<>` | None (follows) | CBOR diagnostic | No |
 | 7 (pubsub) | `Header: POST (Code=0.02)` | Split options | `Payload (...):` | CBOR diagnostic | No |
+| 8 (9953) | `FETCH coaps://host/path` | Full URI | `Payload (...):` per representation | Hex and human-readable | No |
 {: #tab-variants title="Comparison of existing CoAP notation variants"}
 
-Three observations follow from the survey. Variants 5, 6, and 7 all carry CBOR diagnostic payloads but frame the surrounding message differently. Variants 3 and 4 are the closest to HTTP message syntax, while Variants 5 and 7 are the most structured and the most amenable to mechanical parsing. Only Variants 1 and 2 include message-layer information; the remaining variants describe the application layer alone.
+Four observations follow from the survey. Variants 5, 6, and 7 all carry CBOR diagnostic payloads but frame the surrounding message differently. Variants 3, 4, and 8 are the closest to HTTP message syntax, while Variants 5 and 7 are the most structured and the most amenable to mechanical parsing. Only Variants 1 and 2 include message-layer information; the remaining variants describe the application layer alone. Variant 8 is the only one to show a payload in more than one representation; {{representations}} adopts that device, with the marker reserved for a representation other than the default.
 
 [^todo1]
 
@@ -594,7 +702,7 @@ The survey yields five design elements, which the notation in the body satisfies
 2. Option lines as `Name: value` pairs.
 3. An explicit separator between options and payload.
 4. A declared payload format, as a Content-Format value or annotation, so that a tool can validate the payload.
-5. A payload in the text notation appropriate to that format: CBOR EDN, JSON, link-format, or a hexadecimal dump.
+5. A payload in the text notation appropriate to that format: CBOR EDN, JSON, link-format, or a hexadecimal dump, with a further representation marked where the octets matter or the format has a human-readable rendering.
 
 # Acknowledgements
 {: numbered='no'}
