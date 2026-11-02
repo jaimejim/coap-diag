@@ -63,7 +63,7 @@ This document defines a text notation for representing Constrained Application P
 
 The Constrained Application Protocol (CoAP) {{RFC7252}} defines a request/response model in which clients send requests on resources hosted by servers, receiving responses. Documents that specify or use CoAP illustrate these exchanges with examples: a request line, a set of options, and a payload, followed by the response. These examples are how a reader first understands a protocol interaction, and they are frequently the part of a document that implementers copy from.
 
-Authors write these examples in divergent, ad hoc notations. Some split the request target into individual `Uri-Path` and `Uri-Query` option lines; others compose it into a single URI on the first line. Some prefix each message with `Header:` and each body with `Payload:`; others use `Req:` and `Res:`, or no markers at all. The same CBOR payload appears with and without a declared content format, and response codes are written both as `2.05 Content` and as `Header: Content (Code=2.05)`. {{survey}} surveys seven such variants drawn from published RFCs and active drafts.
+Authors write these examples in divergent, ad hoc notations. Some split the request target into individual `Uri-Path` and `Uri-Query` option lines; others compose it into a single URI on the first line. Some prefix each message with `Header:` and each body with `Payload:`; others use `Req:` and `Res:`, or no markers at all. The same CBOR payload appears with and without a declared content format, and response codes are written both as `2.05 Content` and as `Header: Content (Code=2.05)`. {{survey}} surveys some of the variants drawn from published RFCs and active drafts.
 
 This divergence has two costs. A reader who moves between documents must re-learn the convention each time. More importantly, no widely used notation is both readable and machine-checkable, so a malformed CBOR or JSON payload in an example is caught only by a human reviewer, if at all. Tooling that could validate payloads exists ({{tool-integration}}), but it needs a predictable structure to parse first.
 
@@ -94,13 +94,17 @@ Content-Format annotation:
 payload:
 : The message body, separated from the option lines by a single blank line and written in the text notation of its content format.
 
+representation:
+: One rendering of a payload. The text notation of the content format is the default representation; `hex` and `text` are the further representations defined in {{representations}}.
+
+representation marker:
+: A line of the form `Payload (form):` that introduces a representation other than the default.
+
 transport annotation:
 : An optional parenthetical on the request or response line that records message-layer detail such as the message type or token, for example `(CON, Token=0x64)`.
 
-EDN:
-: CBOR Diagnostic Notation, the text representation of CBOR data items originally defined in {{Section 8 of RFC8949}} and {{Appendix G of RFC8610}} and now in {{I-D.ietf-cbor-edn-literals}}.[^Namechange]
-
-[^Namechange]: The name EDN and its expansion is currently under discussion in the CBOR WG and might change.
+CDN:
+: Concise Diagnostic Notation, the text representation of CBOR data items originally defined in {{Section 8 of RFC8949}} and {{Appendix G of RFC8610}} and now specified in {{I-D.ietf-cbor-edn-literals}}.
 
 # Design Principles {#principles}
 
@@ -175,7 +179,7 @@ A single blank line separates the last option line from the payload. The payload
 
 {:vspace}
 CBOR-based formats:
-: EDN, with inline comments where they aid the reader. A CBOR sequence {{RFC8742}} is written as the comma-separated EDN form, as in Variant 6 of {{survey}}.
+: CDN, with inline comments where they aid the reader. A CBOR sequence {{RFC8742}} is written as the comma-separated CDN form, as in Variant 6 of {{survey}}.
 
 JSON-based formats:
 : JSON.
@@ -184,7 +188,7 @@ Link-format:
 : CoRE Link Format {{RFC6690}}.
 
 Binary content beyond CBOR:
-: A hexadecimal dump using the `h'...'` notation of EDN {{RFC8949}}. Blank space and comments between the hex digits are permitted by {{I-D.ietf-cbor-edn-literals}}, so the dump can be grouped into fields and annotated.
+: A hexadecimal dump using the `h'...'` notation of CDN {{RFC8949}}. Blank space and comments between the hex digits are permitted by {{I-D.ietf-cbor-edn-literals}}, so the dump can be grouped into fields and annotated.
 
 The diagnostic payload of an error response ({{Section 5.5.2 of RFC7252}}) is written as a text string with no Content-Format annotation, as shown in {{fig-error}}.
 
@@ -198,7 +202,7 @@ A representation other than the default is introduced by a representation marker
 
 {:vspace}
 `hex`:
-: The octets of the payload, written as an EDN byte string in `h'...'` notation. For a CBOR-based format this is the encoding of the EDN shown as the default representation.
+: The octets of the payload, written as a CDN byte string in `h'...'` notation. For a CBOR-based format this is the encoding of the CDN shown as the default representation.
 
 `text`:
 : A human-readable rendering of the payload in a form established for the content format, such as the DNS presentation style in {{fig-doc}}. A `text` representation is for the reader; tooling does not parse it.
@@ -428,7 +432,7 @@ Payload (text):
 ~~~~
 {: #fig-doc title="DNS over CoAP query with two payload representations"}
 
-The same query in the `application/dns+cbor` format of {{-dnscbor}}. The payload is CBOR and is therefore written in EDN, with no second representation needed. Constants such as the record type are written with the `e''` application extension of {{-eref}}, as {{-dnscbor}} does; in the response the name, type, and class are elided because they follow from the question:
+The same query in the `application/dns+cbor` format of {{-dnscbor}}. The payload is CBOR and is therefore written in CDN, with no second representation needed. Constants such as the record type are written with the `e''` application extension of {{-eref}}, as {{-dnscbor}} does; in the response the name, type, and class are elided because they follow from the question:
 
 ~~~~ coap
 FETCH coaps://[2001:db8::1]/
@@ -458,7 +462,7 @@ Unknown topic
 
 # Relationship to Existing Notations {#relationship}
 
-The notation composes elements that already appear in published documents rather than inventing new ones. The request line follows the method-and-URI form of {{RFC8132}} and {{RFC9176}}. The option lines follow the `Name: value` form used in {{RFC9203}}. The blank line separating options from the payload follows HTTP message syntax {{RFC9112}}. The Content-Format annotation, a number followed by a media type in parentheses, follows {{RFC8132}}. CBOR payloads follow the commented EDN style used in {{RFC9203}} and in CORECONF {{I-D.ietf-core-comi}}. Transport annotations use the terms of {{RFC7252}}.
+The notation composes elements that already appear in published documents rather than inventing new ones. The request line follows the method-and-URI form of {{RFC8132}} and {{RFC9176}}. The option lines follow the `Name: value` form used in {{RFC9203}}. The blank line separating options from the payload follows HTTP message syntax {{RFC9112}}. The Content-Format annotation, a number followed by a media type in parentheses, follows {{RFC8132}}. CBOR payloads follow the commented CDN style used in {{RFC9203}} and in CORECONF {{I-D.ietf-core-comi}}. Transport annotations use the terms of {{RFC7252}}.
 
 {{survey}} presents the source notations in more detail and compares them along these dimensions.
 
@@ -482,7 +486,7 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 
 A tool processes such a block in four steps: it parses the structure into the first line, the option lines, and the payload; it reads the content-format number from the Content-Format annotation; it dispatches the payload to a validator for that format, such as a CBOR diagnostic parser for CBOR-based formats or a JSON parser for JSON-based formats; and it reports any error with the line number within the block.
 
-Representation markers ({{representations}}) steer the same dispatch. The default representation is validated as above. A `hex` representation is parsed as an EDN byte string; where the tool has a decoder for the content format, it decodes the octets, and where the block also shows the default representation of a CBOR-based format, it checks that the EDN encodes to the same octets. A `text` representation is skipped. EDN application extensions in a payload, such as the `e''` constants of {{fig-dns-cbor}}, require their definitions to be available to the tool in the same way a CDDL data definition is.
+Representation markers ({{representations}}) steer the same dispatch. The default representation is validated as above. A `hex` representation is parsed as a CDN byte string; where the tool has a decoder for the content format, it decodes the octets, and where the block also shows the default representation of a CBOR-based format, it checks that the CDN encodes to the same octets. A `text` representation is skipped. CDN application extensions in a payload, such as the `e''` constants of {{fig-dns-cbor}}, require their definitions to be available to the tool in the same way a CDDL data definition is.
 
 A block can reference a CDDL data definition so that the payload is checked for structure as well as well-formedness:
 
@@ -501,7 +505,7 @@ Content-Format: TBD606 (application/core-pubsub+cbor)
 {: check-cddl="pubsub-topic.cddl"}
 ~~~~
 
-The building blocks for this validation already exist: kramdown-rfc validates JSON sourcecode blocks and has hooks for CBOR diagnostic types; the `edn-abnf` Ruby gem parses EDN (ABNF in {{I-D.ietf-cbor-edn-literals}}) and round-trips it to and from bytes; and the `cddl` Ruby gem validates CBOR against a CDDL data definition.
+The building blocks for this validation already exist: kramdown-rfc validates JSON sourcecode blocks and has hooks for CBOR diagnostic types; the `edn-abnf` Ruby gem parses CDN (ABNF in {{I-D.ietf-cbor-edn-literals}}) and round-trips it to and from bytes; and the `cddl` Ruby gem validates CBOR against a CDDL data definition.
 
 # Security Considerations {#seccons}
 
@@ -509,7 +513,7 @@ This notation appears in documentation, not on the wire, and it introduces no pr
 
 Examples written in this notation are illustrative and are not normative unless the surrounding document states otherwise. A reader who copies an example into an implementation is responsible for confirming that it matches the normative text.
 
-Tooling that validates or executes example payloads processes input taken from a document under edit. Such tooling treats the payloads and any referenced CDDL data definition as untrusted input: a malformed EDN payload or a hostile data definition affects only the document build and does not reach a protocol endpoint.
+Tooling that validates or executes example payloads processes input taken from a document under edit. Such tooling treats the payloads and any referenced CDDL data definition as untrusted input: a malformed CDN payload or a hostile data definition affects only the document build and does not reach a protocol endpoint.
 
 # IANA Considerations {#iana}
 
@@ -703,9 +707,9 @@ The survey yields five design elements, which the notation in the body satisfies
 2. Option lines as `Name: value` pairs.
 3. An explicit separator between options and payload.
 4. A declared payload format, as a Content-Format value or annotation, so that a tool can validate the payload.
-5. A payload in the text notation appropriate to that format: CBOR EDN, JSON, link-format, or a hexadecimal dump, with a further representation marked where the octets matter or the format has a human-readable rendering.
+5. A payload in the text notation appropriate to that format: CDN, JSON, link-format, or a hexadecimal dump, with a further representation marked where the octets matter or the format has a human-readable rendering.
 
 # Acknowledgements
 {: numbered='no'}
 
-This notation distills conventions from {{RFC7252}}, {{RFC7641}}, {{RFC8132}}, {{RFC9176}}, {{RFC9203}}, and CORECONF, and from discussion in the CoRE Working Group.
+This notation distills conventions from {{RFC7252}}, {{RFC7641}}, {{RFC8132}}, {{RFC9176}}, {{RFC9203}}, {{RFC9953}}, and CORECONF, and from discussion in the CoRE Working Group. The authors thank Mikolai Gütschow, Martine Lenders, Marco Tiloca, and Christian Amsüss for their comments and questions.
