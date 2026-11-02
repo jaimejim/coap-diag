@@ -15,7 +15,7 @@ venue:
   github: jaimejim/coap-diag
 
 author:
-- name: Jaime Jimenez
+- name: Jaime Jiménez
   org: Ericsson
   email: jaime@iki.fi
   country: Finland
