@@ -85,7 +85,7 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Design Principles . . . . . . . . . . . . . . . . . . . . . .   4
    4.  Notation  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     4.1.  Request Line  . . . . . . . . . . . . . . . . . . . . . .   5
+     4.1.  Request Line  . . . . . . . . . . . . . . . . . . . . . .   6
      4.2.  Response Line . . . . . . . . . . . . . . . . . . . . . .   6
      4.3.  Options . . . . . . . . . . . . . . . . . . . . . . . . .   6
      4.4.  Content-Format Annotation . . . . . . . . . . . . . . . .   6
@@ -132,7 +132,7 @@ Internet-Draft                  CoAP Diag                  November 2026
    others use Req: and Res:, or no markers at all.  The same CBOR
    payload appears with and without a declared content format, and
    response codes are written both as 2.05 Content and as Header:
-   Content (Code=2.05).  Appendix A surveys seven such variants drawn
+   Content (Code=2.05).  Appendix A surveys some of the variants drawn
    from published RFCs and active drafts.
 
    This divergence has two costs.  A reader who moves between documents
@@ -193,23 +193,39 @@ Internet-Draft                  CoAP Diag                  November 2026
       The message body, separated from the option lines by a single
       blank line and written in the text notation of its content format.
 
+   representation:
+      One rendering of a payload.  The text notation of the content
+      format is the default representation; hex and text are the further
+      representations defined in Section 4.6.
+
+   representation marker:
+      A line of the form Payload (form): that introduces a
+      representation other than the default.
+
    transport annotation:
       An optional parenthetical on the request or response line that
       records message-layer detail such as the message type or token,
       for example (CON, Token=0x64).
 
-   EDN:
-      CBOR Diagnostic Notation, the text representation of CBOR data
+   CDN:
+      Concise Diagnostic Notation, the text representation of CBOR data
       items originally defined in Section 8 of [RFC8949] and Appendix G
-      of [RFC8610] and now in [I-D.ietf-cbor-edn-literals].
-      // The name EDN and its expansion is currently under discussion in
-      // the CBOR WG and might change.
+      of [RFC8610] and now specified in [I-D.ietf-cbor-edn-literals].
 
 3.  Design Principles
 
    The notation follows five principles.
 
    Familiar structure:
+
+
+
+
+Jimenez & Bormann          Expires 6 May 2027                   [Page 4]
+
+Internet-Draft                  CoAP Diag                  November 2026
+
+
       The notation follows HTTP message syntax [RFC9112] where
       practical, so that a reader accustomed to HTTP examples can read a
       CoAP exchange without a legend.
@@ -218,13 +234,6 @@ Internet-Draft                  CoAP Diag                  November 2026
       The notation omits redundant labels while keeping the structure
       parsable.  The method or response code, the options, and the
       payload each occupy a distinct position.
-
-
-
-Jimenez & Bormann          Expires 6 May 2027                   [Page 4]
-
-Internet-Draft                  CoAP Diag                  November 2026
-
 
    Payload-format-aware:
       A payload is preceded by a Content-Format annotation that names
@@ -265,6 +274,14 @@ Internet-Draft                  CoAP Diag                  November 2026
 
                         Figure 2: Response structure
 
+
+
+
+Jimenez & Bormann          Expires 6 May 2027                   [Page 5]
+
+Internet-Draft                  CoAP Diag                  November 2026
+
+
 4.1.  Request Line
 
    The request line carries the CoAP method followed by the request
@@ -274,14 +291,6 @@ Internet-Draft                  CoAP Diag                  November 2026
    beginning with / (i.e., in absolute-path reference form, see
    Section 4.2 of [RFC3986]).  Where the host and/or URI scheme is
    relevant, the full URI form is used, for example POST
-
-
-
-Jimenez & Bormann          Expires 6 May 2027                   [Page 5]
-
-Internet-Draft                  CoAP Diag                  November 2026
-
-
    coap://broker.example.com/ps.
 
 4.2.  Response Line
@@ -322,15 +331,6 @@ Internet-Draft                  CoAP Diag                  November 2026
    A single blank line separates the last option line from the payload.
    The payload is written in the text notation of its content format:
 
-   CBOR-based formats:
-      EDN, with inline comments where they aid the reader.  A CBOR
-      sequence [RFC8742] is written as the comma-separated EDN form, as
-      in Variant 6 of Appendix A.
-
-   JSON-based formats:
-      JSON.
-
-
 
 
 Jimenez & Bormann          Expires 6 May 2027                   [Page 6]
@@ -338,11 +338,19 @@ Jimenez & Bormann          Expires 6 May 2027                   [Page 6]
 Internet-Draft                  CoAP Diag                  November 2026
 
 
+   CBOR-based formats:
+      CDN, with inline comments where they aid the reader.  A CBOR
+      sequence [RFC8742] is written as the comma-separated CDN form, as
+      in Variant 6 of Appendix A.
+
+   JSON-based formats:
+      JSON.
+
    Link-format:
       CoRE Link Format [RFC6690].
 
    Binary content beyond CBOR:
-      A hexadecimal dump using the h'...' notation of EDN [RFC8949].
+      A hexadecimal dump using the h'...' notation of CDN [RFC8949].
       Blank space and comments between the hex digits are permitted by
       [I-D.ietf-cbor-edn-literals], so the dump can be grouped into
       fields and annotated.
@@ -375,17 +383,9 @@ Internet-Draft                  CoAP Diag                  November 2026
    shown, comes first and carries no marker.  Two forms are defined:
 
    hex:
-      The octets of the payload, written as an EDN byte string in h'...'
-      notation.  For a CBOR-based format this is the encoding of the EDN
+      The octets of the payload, written as a CDN byte string in h'...'
+      notation.  For a CBOR-based format this is the encoding of the CDN
       shown as the default representation.
-
-   text:
-      A human-readable rendering of the payload in a form established
-      for the content format, such as the DNS presentation style in
-      Figure 12.  A text representation is for the reader; tooling does
-      not parse it.
-
-
 
 
 
@@ -393,6 +393,12 @@ Jimenez & Bormann          Expires 6 May 2027                   [Page 7]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
+
+   text:
+      A human-readable rendering of the payload in a form established
+      for the content format, such as the DNS presentation style in
+      Figure 12.  A text representation is for the reader; tooling does
+      not parse it.
 
    A blank line separates a marked representation from the one before
    it.  Figure 12 shows a request with the default and the text
@@ -425,17 +431,11 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 4.9.  Grammar
 
-   Figure 4 sketches the structure in ABNF [RFC5234].  The grammar is
-   descriptive: it fixes the lexical shape a tool relies on, not every
-   detail of the method names, option names, or payload syntax, which
-   are drawn from the documents cited in Section 6.
-
-
-
-
-
-
-
+   Figure 4 sketches the structure in ABNF [RFC5234], with the case-
+   sensitive string literals of [RFC7405].  The grammar is descriptive:
+   it fixes the lexical shape a tool relies on, not every detail of the
+   method names, option names, or payload syntax, which are drawn from
+   the documents cited in Section 6.
 
 
 
@@ -706,7 +706,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
    The same query in the application/dns+cbor format of
    [I-D.lenders-dns-cbor].  The payload is CBOR and is therefore written
-   in EDN, with no second representation needed.  Constants such as the
+   in CDN, with no second representation needed.  Constants such as the
    record type are written with the e'' application extension of
    [I-D.ietf-cbor-edn-e-ref], as [I-D.lenders-dns-cbor] does; in the
    response the name, type, and class are elided because they follow
@@ -765,7 +765,7 @@ Internet-Draft                  CoAP Diag                  November 2026
    separating options from the payload follows HTTP message syntax
    [RFC9112].  The Content-Format annotation, a number followed by a
    media type in parentheses, follows [RFC8132].  CBOR payloads follow
-   the commented EDN style used in [RFC9203] and in CORECONF
+   the commented CDN style used in [RFC9203] and in CORECONF
    [I-D.ietf-core-comi].  Transport annotations use the terms of
    [RFC7252].
 
@@ -808,11 +808,11 @@ Internet-Draft                  CoAP Diag                  November 2026
 
    Representation markers (Section 4.6) steer the same dispatch.  The
    default representation is validated as above.  A hex representation
-   is parsed as an EDN byte string; where the tool has a decoder for the
+   is parsed as a CDN byte string; where the tool has a decoder for the
    content format, it decodes the octets, and where the block also shows
    the default representation of a CBOR-based format, it checks that the
-   EDN encodes to the same octets.  A text representation is skipped.
-   EDN application extensions in a payload, such as the e'' constants of
+   CDN encodes to the same octets.  A text representation is skipped.
+   CDN application extensions in a payload, such as the e'' constants of
    Figure 13, require their definitions to be available to the tool in
    the same way a CDDL data definition is.
 
@@ -844,7 +844,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
    The building blocks for this validation already exist: kramdown-rfc
    validates JSON sourcecode blocks and has hooks for CBOR diagnostic
-   types; the edn-abnf Ruby gem parses EDN (ABNF in
+   types; the edn-abnf Ruby gem parses CDN (ABNF in
    [I-D.ietf-cbor-edn-literals]) and round-trips it to and from bytes;
    and the cddl Ruby gem validates CBOR against a CDDL data definition.
 
@@ -862,7 +862,7 @@ Internet-Draft                  CoAP Diag                  November 2026
    Tooling that validates or executes example payloads processes input
    taken from a document under edit.  Such tooling treats the payloads
    and any referenced CDDL data definition as untrusted input: a
-   malformed EDN payload or a hostile data definition affects only the
+   malformed CDN payload or a hostile data definition affects only the
    document build and does not reach a protocol endpoint.
 
 9.  IANA Considerations
@@ -974,6 +974,10 @@ Internet-Draft                  CoAP Diag                  November 2026
               DOI 10.17487/RFC5234, January 2008,
               <https://www.rfc-editor.org/rfc/rfc5234>.
 
+   [RFC7405]  Kyzivat, P., "Case-Sensitive String Support in ABNF",
+              STD 68, RFC 7405, DOI 10.17487/RFC7405, December 2014,
+              <https://www.rfc-editor.org/rfc/rfc7405>.
+
    [RFC7967]  Bhattacharyya, A., Bandyopadhyay, S., Pal, A., and T.
               Bose, "Constrained Application Protocol (CoAP) Option for
               No Server Response", RFC 7967, DOI 10.17487/RFC7967,
@@ -997,10 +1001,6 @@ Internet-Draft                  CoAP Diag                  November 2026
    [RFC9112]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP/1.1", STD 99, RFC 9112, DOI 10.17487/RFC9112,
               June 2022, <https://www.rfc-editor.org/rfc/rfc9112>.
-
-
-
-
 
 
 
@@ -1363,16 +1363,18 @@ Appendix B.  Design Elements for a Unified Notation
    4.  A declared payload format, as a Content-Format value or
        annotation, so that a tool can validate the payload.
 
-   5.  A payload in the text notation appropriate to that format: CBOR
-       EDN, JSON, link-format, or a hexadecimal dump, with a further
+   5.  A payload in the text notation appropriate to that format: CDN,
+       JSON, link-format, or a hexadecimal dump, with a further
        representation marked where the octets matter or the format has a
        human-readable rendering.
 
 Acknowledgements
 
    This notation distills conventions from [RFC7252], [RFC7641],
-   [RFC8132], [RFC9176], [RFC9203], and CORECONF, and from discussion in
-   the CoRE Working Group.
+   [RFC8132], [RFC9176], [RFC9203], [RFC9953], and CORECONF, and from
+   discussion in the CoRE Working Group.  The authors thank Mikolai
+   Gütschow, Martine Lenders, Marco Tiloca, and Christian Amsüss for
+   their comments and questions.
 
 Authors' Addresses
 
@@ -1389,8 +1391,6 @@ Authors' Addresses
    Germany
    Phone: +49-421-218-63921
    Email: cabo@tzi.org
-
-
 
 
 
