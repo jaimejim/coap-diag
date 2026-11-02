@@ -2,7 +2,7 @@
 
 
 
-CoRE Working Group                                            J. Jimenez
+CoRE Working Group                                            J. Jiménez
 Internet-Draft                                                  Ericsson
 Intended status: Informational                                C. Bormann
 Expires: 6 May 2027                               Universität Bremen TZI
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 1]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 1]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 2]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 2]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -165,7 +165,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 3]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 3]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -221,7 +221,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 4]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 4]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -277,7 +277,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 5]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 5]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -333,7 +333,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 6]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 6]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -389,7 +389,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 7]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 7]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -445,7 +445,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 8]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 8]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -501,7 +501,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                   [Page 9]
+Jiménez & Bormann          Expires 6 May 2027                   [Page 9]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -557,7 +557,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 10]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 10]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -613,7 +613,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 11]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 11]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -669,7 +669,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 12]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 12]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -725,7 +725,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 13]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 13]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -781,7 +781,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 14]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 14]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -837,7 +837,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 15]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 15]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -893,7 +893,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 16]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 16]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -942,14 +942,14 @@ Internet-Draft                  CoAP Diag                  November 2026
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
               subscribe architecture for the Constrained Application
               Protocol (CoAP)", Work in Progress, Internet-Draft, draft-
-              ietf-core-coap-pubsub-21, 2 July 2026,
+              ietf-core-coap-pubsub-22, 2 November 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              coap-pubsub-21>.
+              coap-pubsub-22>.
 
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 17]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 17]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -1005,7 +1005,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 18]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 18]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -1061,7 +1061,7 @@ Appendix A.  Survey of Existing Notation Variants
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 19]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 19]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -1117,7 +1117,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 20]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 20]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -1173,7 +1173,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 21]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 21]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -1229,7 +1229,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 22]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 22]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -1285,7 +1285,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 23]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 23]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -1341,7 +1341,7 @@ Internet-Draft                  CoAP Diag                  November 2026
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 24]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 24]
 
 Internet-Draft                  CoAP Diag                  November 2026
 
@@ -1378,7 +1378,7 @@ Acknowledgements
 
 Authors' Addresses
 
-   Jaime Jimenez
+   Jaime Jiménez
    Ericsson
    Finland
    Email: jaime@iki.fi
@@ -1397,4 +1397,4 @@ Authors' Addresses
 
 
 
-Jimenez & Bormann          Expires 6 May 2027                  [Page 25]
+Jiménez & Bormann          Expires 6 May 2027                  [Page 25]
