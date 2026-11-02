@@ -231,7 +231,7 @@ An exchange of more than two messages is written as a sequence of requests and r
 
 ## Grammar {#grammar}
 
-{{fig-grammar}} sketches the structure in ABNF {{?RFC5234}}. The grammar is descriptive: it fixes the lexical shape a tool relies on, not every detail of the method names, option names, or payload syntax, which are drawn from the documents cited in {{relationship}}.
+{{fig-grammar}} sketches the structure in ABNF {{?RFC5234}}, with the case-sensitive string literals of {{?RFC7405}}. The grammar is descriptive: it fixes the lexical shape a tool relies on, not every detail of the method names, option names, or payload syntax, which are drawn from the documents cited in {{relationship}}.
 
 ~~~~ abnf
 message = start-line *option-line [blank-line payload]
