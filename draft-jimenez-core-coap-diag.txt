@@ -5,8 +5,8 @@
 CoRE Working Group                                            J. Jimenez
 Internet-Draft                                                  Ericsson
 Intended status: Informational                                C. Bormann
-Expires: 1 May 2027                               Universität Bremen TZI
-                                                         28 October 2026
+Expires: 6 May 2027                               Universität Bremen TZI
+                                                         2 November 2026
 
 
                     CoAP Diagnostic Message Notation
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 1]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 1]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    Internet-Drafts are draft documents valid for a maximum of six months
@@ -63,7 +63,7 @@ Internet-Draft                  CoAP Diag                   October 2026
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 May 2027.
+   This Internet-Draft will expire on 6 May 2027.
 
 Copyright Notice
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 2]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 2]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 3]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 3]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    response line:
@@ -221,9 +221,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 4]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 4]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    Payload-format-aware:
@@ -277,9 +277,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 5]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 5]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    coap://broker.example.com/ps.
@@ -333,9 +333,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 6]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 6]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    Link-format:
@@ -389,9 +389,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 7]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 7]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    A blank line separates a marked representation from the one before
@@ -445,9 +445,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 8]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 8]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    message = start-line *option-line [blank-line payload]
@@ -460,8 +460,8 @@ Internet-Draft                  CoAP Diag                   October 2026
    payload = default-repr *(blank-line marked-repr)
            / marked-repr *(blank-line marked-repr)
    marked-repr = repr-marker repr
-   repr-marker = "Payload (" form "):" newline
-   form = "hex" / "text"
+   repr-marker = %s"Payload (" form "):" newline
+   form = %s"hex" / %s"text"
 
    method = 1*ALPHA                 ; e.g. GET, POST, iPATCH
    request-target = path ["?" query] / absolute-URI
@@ -501,9 +501,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                   [Page 9]
+Jimenez & Bormann          Expires 6 May 2027                   [Page 9]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    POST /ps
@@ -557,9 +557,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 10]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 10]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    iPATCH /ps/h9392
@@ -613,9 +613,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 11]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 11]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    POST /token
@@ -669,9 +669,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 12]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 12]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    FETCH coaps://[2001:db8::1]/
@@ -725,9 +725,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 13]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 13]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    FETCH coaps://[2001:db8::1]/
@@ -781,9 +781,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 14]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 14]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    ~~~ coap
@@ -837,9 +837,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 15]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 15]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    The building blocks for this validation already exist: kramdown-rfc
@@ -893,9 +893,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 16]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 16]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    [RFC7641]  Hartke, K., "Observing Resources in the Constrained
@@ -934,9 +934,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
    [I-D.ietf-cbor-edn-literals]
               Bormann, C., "Concise Diagnostic Notation (CDN)", Work in
-              Progress, Internet-Draft, draft-ietf-cbor-edn-literals-28,
-              29 September 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-cbor-edn-literals-28>.
+              Progress, Internet-Draft, draft-ietf-cbor-edn-literals-29,
+              31 October 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-cbor-edn-literals-29>.
 
    [I-D.ietf-core-coap-pubsub]
               Jimenez, J., Koster, M., and A. Keränen, "A publish-
@@ -949,25 +949,25 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 17]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 17]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    [I-D.ietf-core-comi]
               Veillette, M., Van der Stok, P., Pelov, A., Bierman, A.,
               and C. Bormann, "CoAP Management Interface (CORECONF)",
-              Work in Progress, Internet-Draft, draft-ietf-core-comi-21,
-              2 March 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-comi-21>.
+              Work in Progress, Internet-Draft, draft-ietf-core-comi-22,
+              2 November 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-comi-22>.
 
    [I-D.lenders-dns-cbor]
               Lenders, M. S., Bormann, C., Gütschow, M., Schmidt, T. C.,
               and M. Wählisch, "A Concise Binary Object Representation
               (CBOR) of DNS Messages", Work in Progress, Internet-Draft,
-              draft-lenders-dns-cbor-18, 27 July 2026,
+              draft-lenders-dns-cbor-19, 2 November 2026,
               <https://datatracker.ietf.org/doc/html/draft-lenders-dns-
-              cbor-18>.
+              cbor-19>.
 
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234,
@@ -1005,9 +1005,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 18]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 18]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    [RFC9200]  Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
@@ -1061,9 +1061,9 @@ Appendix A.  Survey of Existing Notation Variants
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 19]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 19]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    Header: GET 0x41011633
@@ -1117,9 +1117,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 20]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 20]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    Header: POST (Code=0.02)
@@ -1173,9 +1173,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 21]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 21]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    Header: POST (Code=0.02)
@@ -1229,9 +1229,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 22]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 22]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    FETCH coaps://[2001:db8::1]/
@@ -1285,9 +1285,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 23]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 23]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    +========+=============+=======+==============+==========+=========+
@@ -1341,9 +1341,9 @@ Internet-Draft                  CoAP Diag                   October 2026
 
 
 
-Jimenez & Bormann          Expires 1 May 2027                  [Page 24]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 24]
 
-Internet-Draft                  CoAP Diag                   October 2026
+Internet-Draft                  CoAP Diag                  November 2026
 
 
    // TODO: Look at RFC 8323 and signaling codes (7.xx).
@@ -1378,6 +1378,7 @@ Authors' Addresses
 
    Jaime Jimenez
    Ericsson
+   Finland
    Email: jaime@iki.fi
 
 
@@ -1396,5 +1397,4 @@ Authors' Addresses
 
 
 
-
-Jimenez & Bormann          Expires 1 May 2027                  [Page 25]
+Jimenez & Bormann          Expires 6 May 2027                  [Page 25]
