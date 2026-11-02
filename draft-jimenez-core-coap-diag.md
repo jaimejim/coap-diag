@@ -18,6 +18,7 @@ author:
 - name: Jaime Jimenez
   org: Ericsson
   email: jaime@iki.fi
+  country: Finland
 - name: Carsten Bormann
   org: Universität Bremen TZI
   street: Postfach 330440
@@ -239,8 +240,8 @@ annot = "(" *annot-text ")"    ; free-form transport detail
 payload = default-repr *(blank-line marked-repr)
         / marked-repr *(blank-line marked-repr)
 marked-repr = repr-marker repr
-repr-marker = "Payload (" form "):" newline
-form = "hex" / "text"
+repr-marker = %s"Payload (" form "):" newline
+form = %s"hex" / %s"text"
 
 method = 1*ALPHA                 ; e.g. GET, POST, iPATCH
 request-target = path ["?" query] / absolute-URI
