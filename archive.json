@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-11-01T00:25:43.628766+00:00",
+  "timestamp": "2026-11-03T00:20:57.400027+00:00",
   "repo": "jaimejim/coap-diag",
   "labels": [
     {
@@ -85,6 +85,62 @@
           "updatedAt": "2026-07-04T15:31:03Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOTLrZsc8AAAABMWOGYg",
+      "title": "Nits around -01",
+      "url": "https://github.com/jaimejim/coap-diag/pull/2",
+      "state": "MERGED",
+      "author": "cabo",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-11-02T16:18:25Z",
+      "updatedAt": "2026-11-02T16:19:44Z",
+      "baseRepository": "jaimejim/coap-diag",
+      "baseRefName": "main",
+      "baseRefOid": "e0e56dead3e57e79f80c2860354602b4539cea1e",
+      "headRepository": "cabo/coap-diag",
+      "headRefName": "main",
+      "headRefOid": "7694f9f662735015211aea340da3e62850d8c0e7",
+      "closedAt": "2026-11-02T16:19:44Z",
+      "mergedAt": "2026-11-02T16:19:44Z",
+      "mergedBy": "jaimejim",
+      "mergeCommit": {
+        "oid": "1afb6cd92932904f95f3d0d45cf7af97f3d25dfc"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOTLrZsc8AAAABMWgYpQ",
+      "title": "Spelling of name",
+      "url": "https://github.com/jaimejim/coap-diag/pull/3",
+      "state": "MERGED",
+      "author": "cabo",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-11-02T16:39:58Z",
+      "updatedAt": "2026-11-02T19:05:41Z",
+      "baseRepository": "jaimejim/coap-diag",
+      "baseRefName": "main",
+      "baseRefOid": "0d3d9cf902af1aa473398d70ec17cd6df2faf010",
+      "headRepository": "cabo/coap-diag",
+      "headRefName": "main",
+      "headRefOid": "bed0973472c561bd43243b7240212ac1a31b954f",
+      "closedAt": "2026-11-02T19:05:41Z",
+      "mergedAt": "2026-11-02T19:05:41Z",
+      "mergedBy": "jaimejim",
+      "mergeCommit": {
+        "oid": "a792a54b83d17f50a9eda1f68b5ab686cd15eaae"
+      },
+      "comments": [],
       "reviews": []
     }
   ]
